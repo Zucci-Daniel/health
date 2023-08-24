@@ -4,5 +4,5 @@ export type SignUpTypes = GlobalScreenTypes & {};
 
 export type SignupInputTypes = {
   label: string;
-  isPassword?: boolean;
+  value: string;
 };

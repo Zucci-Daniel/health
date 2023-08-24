@@ -1,6 +1,6 @@
 import React from 'react';
 import {View} from 'react-native';
-// import {GlobalFormHeaders} from '../../../configs/GlobalStyles';
+import {GlobalFormHeaders} from '../../../configs/GlobalStyles';
 import {Typo} from '../../../configs/Typography';
 import {Hscreen} from '../../../containers';
 import {Hbutton, Hinput} from '../../../presenters';
@@ -12,31 +12,25 @@ import {SignupInputTypes, SignUpTypes} from './type';
 const Signup = ({navigation}: SignUpTypes) => {
   const inputs: Array<SignupInputTypes> = [
     {
-      label: 'Enter First Name',
-      //..add more.
-    },
-    {
-      label: 'Last Name',
+      label: 'Enter Name',
+      value: '',
       //..add more.
     },
   ];
   return (
     <>
-      {/* <JRheader onPressLeftAction={() => navigation.navigate(routes.LOGIN)} /> */}
       <Hscreen>
         <View style={SignUpStyles.container}>
-          <View>
-            <AppText styles={Typo().h2} text={'Set up your profile'} />
+          <View style={GlobalFormHeaders}>
+            <AppText styles={Typo().h2} text={'Sign up'} />
             <AppText
               styles={Typo().P1}
-              text={
-                'Create an account to enhance your online shopping experience.'
-              }
+              text={`Just your name, and we're good to go!🤓`}
             />
           </View>
           <View style={SignUpStyles.inputWrapper}>
-            {inputs.map(({label, isPassword}, index) => (
-              <Hinput key={index} placeHolder={label} />
+            {inputs.map(({label, value}, index) => (
+              <Hinput value={value} key={index} placeHolder={label} />
             ))}
           </View>
           <Hbutton
