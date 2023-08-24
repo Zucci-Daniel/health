@@ -1,3 +1,5 @@
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
+
 import React from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {Platform} from 'react-native';
@@ -12,11 +14,13 @@ const App = () => {
   return (
     <SafeAreaView
       style={{flex: 1, paddingTop: Platform.OS === 'android' ? 0 : 50}}>
-      <Host>
-        <ToastProvider>
-          <NavigationProvider />
-        </ToastProvider>
-      </Host>
+      <GestureHandlerRootView style={{flex: 1}}>
+        <Host>
+          <ToastProvider>
+            <NavigationProvider />
+          </ToastProvider>
+        </Host>
+      </GestureHandlerRootView>
     </SafeAreaView>
   );
 };

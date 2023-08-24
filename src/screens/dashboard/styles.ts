@@ -13,4 +13,12 @@ export const DashboardScreenStyles = StyleSheet.create({
   separator: {
     height: 10,
   },
+  sheetContainer: {
+    width: '100%',
+    alignSelf: 'flex-end',
+    paddingHorizontal: 16,
+    gap: 16,
+    paddingTop: 30,
+    paddingBottom: 50,
+  },
 });

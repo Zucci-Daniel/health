@@ -1,17 +1,25 @@
-import React from 'react';
+import React, {useRef} from 'react';
 import {View} from 'react-native';
 import {GlobalScreenTypes} from '../../configs/GlobalScreenTypes';
 import {HflatScreen, Hscreen} from '../../containers';
+import {useSheet} from '../../hooks/useSheet';
 import {Hheader, HreminderCard} from '../../presenters';
+import {AppSheet} from '../../reusables';
 import {DashboardScreenStyles} from './styles';
 
 const DashboardScreen = ({navigation}: GlobalScreenTypes) => {
+  const addMedSheetRef = useRef(null);
+  const updateMedSheetRef = useRef(null);
+  const {closeSheet: closeUpdateSheetRef, openSheet: openUpdateSheetRef} =
+    useSheet(addMedSheetRef);
+  const {closeSheet, openSheet} = useSheet(addMedSheetRef);
+
   return (
     <>
       <Hheader
         title="Upcoming Medications"
         text="Add Med"
-        onPressLeftAction={() => console.log('ADD')}
+        onPressLeftAction={() => openSheet()}
       />
 
       <HflatScreen
@@ -22,6 +30,9 @@ const DashboardScreen = ({navigation}: GlobalScreenTypes) => {
           <View style={DashboardScreenStyles.separator} />
         )}
       />
+      <AppSheet adjustToContentHeight={true} sheetRef={addMedSheetRef}>
+        <View style={DashboardScreenStyles.sheetContainer}></View>
+      </AppSheet>
     </>
   );
 };
