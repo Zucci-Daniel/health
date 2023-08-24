@@ -1,7 +1,7 @@
 import {StyleSheet} from 'react-native';
 import {GlobalScreen} from '../../configs/GlobalStyles';
 
-export const HomeScreenStyles = StyleSheet.create({
+export const DashboardScreenStyles = StyleSheet.create({
   container: {
     ...GlobalScreen,
     gap: 15,
@@ -10,4 +10,7 @@ export const HomeScreenStyles = StyleSheet.create({
     gap: 20,
   },
   removePadding: {paddingBottom: 0},
+  separator: {
+    height: 10,
+  },
 });
