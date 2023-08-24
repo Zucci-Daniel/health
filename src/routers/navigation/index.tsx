@@ -6,6 +6,7 @@ import {getItem} from '../../helpers/localStorage';
 import {STORAGE_CONSTANTS} from '../../helpers/storageConstants';
 import {setCurrentUser} from '../../redux/global-store/storeSlice';
 import {storeSliceType} from '../../redux/storeType';
+import {HomeScreen} from '../../screens';
 import {Login, OnboardingScreen, Signup} from '../../screens/authentication';
 import {Stack} from '../router-constants';
 import {routes} from '../router-constants/routes';
@@ -55,7 +56,7 @@ export function NavigationProvider() {
         screenOptions={{
           headerShown: false,
         }}>
-        <Stack.Screen name={routes.SIGN_UP} component={DummyScreen} />
+        <Stack.Screen name={routes.HOME} component={HomeScreen} />
       </Stack.Navigator>
     );
   }
