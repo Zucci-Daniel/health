@@ -1,5 +1,6 @@
 import React from 'react';
 import {GlobalScreenTypes} from '../../configs/GlobalScreenTypes';
+import {Hscreen} from '../../containers';
 import {Hheader, HreminderCard} from '../../presenters';
 
 const DashboardScreen = ({navigation}: GlobalScreenTypes) => {
@@ -10,7 +11,15 @@ const DashboardScreen = ({navigation}: GlobalScreenTypes) => {
         text="Add Med"
         onPressLeftAction={() => console.log('ADD')}
       />
-      <HreminderCard />
+      <Hscreen hasPadding={false}>
+        <HreminderCard />
+        <HreminderCard />
+        <HreminderCard />
+        <HreminderCard />
+        <HreminderCard />
+        <HreminderCard />
+        <HreminderCard />
+      </Hscreen>
     </>
   );
 };
