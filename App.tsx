@@ -1,25 +1,17 @@
-import React, {FunctionComponent} from 'react';
-import {View} from 'react-native';
-import {useSelector} from 'react-redux';
-import {pallete} from './src/configs/Colors';
-import {Hbutton, Hinput} from './src/presenters';
-import {storeSliceType} from './src/redux/storeType';
+import React from 'react';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {Platform} from 'react-native';
+import {useIgnore} from './src/hooks/useIgnore';
+import {NavigationProvider} from './src/routers/navigation';
 
-const App: FunctionComponent = () => {
-  //take this out of here.
-  // const {user} = useSelector((state: storeSliceType) => state.storeReducer);
+const App = () => {
+  const ignore = useIgnore();
 
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: pallete.screen,
-      }}>
-      <Hbutton text="bread" />
-      <Hinput />
-    </View>
+    <SafeAreaView
+      style={{flex: 1, paddingTop: Platform.OS === 'android' ? 0 : 50}}>
+      <NavigationProvider />
+    </SafeAreaView>
   );
 };
 
