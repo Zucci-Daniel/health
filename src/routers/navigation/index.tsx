@@ -1,5 +1,6 @@
 import {NavigationContainer} from '@react-navigation/native';
 import {View} from 'react-native';
+import {Signup} from '../../screens/authentication';
 import {Stack} from '../router-constants';
 import {routes} from '../router-constants/routes';
 
@@ -14,7 +15,7 @@ export function NavigationProvider() {
         screenOptions={{
           headerShown: false,
         }}>
-        <Stack.Screen name={routes.SIGN_UP} component={DummyScreen} />
+        <Stack.Screen name={routes.SIGN_UP} component={Signup} />
         <Stack.Screen name={routes.LOGIN} component={DummyScreen} />
       </Stack.Navigator>
     );
