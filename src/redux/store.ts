@@ -6,7 +6,9 @@ import thunk from 'redux-thunk';
 import {TypedUseSelectorHook, useDispatch, useSelector} from 'react-redux';
 import {logThis} from '../helpers';
 import {storeReducer} from './global-store/storeSlice';
+import {LogBox} from 'react-native';
 
+LogBox.ignoreLogs(['redux-persist']);
 const reducers = combineReducers({
   storeReducer,
 });
