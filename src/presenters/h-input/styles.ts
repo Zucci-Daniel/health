@@ -14,9 +14,9 @@ export const HinputStyles = (
       alignItems: 'center',
       flexDirection: 'row',
       borderRadius: 28,
-      borderColor: isFocused ? colors?.borderColor : 'transparent',
+      borderColor: isFocused ? colors?.light : 'transparent',
       borderWidth: 0.5,
-      backgroundColor: isFocused ? 'transparent' : colors.borderColor,
+      backgroundColor: isFocused ? 'transparent' : colors.light,
       paddingHorizontal: isJustInput ? Padding : 0,
     },
     input: {

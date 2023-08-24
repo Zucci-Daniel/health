@@ -25,17 +25,10 @@ const Login = ({navigation}: LoginTypes) => {
   ];
   return (
     <>
-      {/* <JRheader onPressLeftAction={() => navigation.navigate(routes.LOGIN)} /> */}
       <Hscreen>
         <View style={LoginStyles.container}>
           <View style={GlobalFormHeaders}>
             <AppText styles={Typo().h2} text={'Login'} />
-            <AppText
-              styles={Typo().P1}
-              text={
-                'Create an account to enhance your online shopping experience.'
-              }
-            />
           </View>
           <View style={LoginStyles.inputWrapper}>
             {inputs.map(({label, value}, index) => (
