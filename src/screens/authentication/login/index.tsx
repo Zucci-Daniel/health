@@ -5,21 +5,19 @@ import {Typo} from '../../../configs/Typography';
 import {Hscreen} from '../../../containers';
 import {Hbutton, Hinput} from '../../../presenters';
 import {AppText} from '../../../reusables';
-import {routes} from '../../../routers/router-constants/routes';
 import {SignupInputTypes} from '../signup/type';
 import {LoginStyles} from './styles';
 import {LoginTypes} from './type';
+import {useLogin} from './useLogin';
 
 const Login = ({navigation}: LoginTypes) => {
+  const {handleLogin, password, setPassword, shouldDisableButton} =
+    useLogin(navigation);
   const inputs: Array<SignupInputTypes> = [
     {
-      label: 'Enter Name',
-      value: '',
-      //..add more.
-    },
-    {
-      label: 'Enter Name',
-      value: '',
+      label: 'Enter your Password',
+      value: password,
+      onChangeText: (text: string) => setPassword(text),
       //..add more.
     },
   ];
@@ -31,14 +29,19 @@ const Login = ({navigation}: LoginTypes) => {
             <AppText styles={Typo().h2} text={'Login'} />
           </View>
           <View style={LoginStyles.inputWrapper}>
-            {inputs.map(({label, value}, index) => (
-              <Hinput value={value} key={index} placeHolder={label} />
+            {inputs.map(({label, value, onChangeText}, index) => (
+              <Hinput
+                value={value}
+                key={index}
+                onChangeText={onChangeText}
+                placeHolder={label}
+              />
             ))}
           </View>
           <Hbutton
-            disabled={false}
+            disabled={shouldDisableButton()}
             text="Continue"
-            onPress={() => navigation.navigate(routes.SIGN_UP)}
+            onPress={handleLogin}
           />
         </View>
       </Hscreen>

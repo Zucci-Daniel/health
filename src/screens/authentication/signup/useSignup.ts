@@ -20,7 +20,7 @@ export const useSignUp = (navigation: NavigationType) => {
     };
     //--- for simplicity, i'll store the password in a list of password in my local storage
     // to mimick a really basic flow, i'll just add it to my list of passwords in my local storage.
-    storeItem(STORAGE_CONSTANTS.STORE_USER_INFO, payload);
+    storeItem(payload.password, payload);
     navigation.navigate(routes.LOGIN);
   };
 
