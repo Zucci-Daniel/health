@@ -158,7 +158,7 @@ export const Typo = (
       textAlign: align,
       fontSize: fontSize || 16,
       fontWeight: fontWeight || fontFamily.Bold,
-      color: color || pallete.buttonText,
+      color: color || pallete.text,
       lineHeight: lineHeight || 28,
     },
     Button2: {
@@ -166,7 +166,7 @@ export const Typo = (
       textAlign: align,
       fontSize: fontSize || 12,
       fontWeight: fontWeight || fontFamily.Bold,
-      color: color || pallete.buttonText,
+      color: color || pallete.text,
       lineHeight: lineHeight || 18,
     },
     Button3: {
@@ -174,7 +174,7 @@ export const Typo = (
       textAlign: align,
       fontSize: fontSize || 10,
       fontWeight: fontWeight || fontFamily.Bold,
-      color: color || pallete.buttonText,
+      color: color || pallete.text,
       lineHeight: lineHeight || 12,
     },
   });
