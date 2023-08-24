@@ -1,7 +1,6 @@
-import React, {FunctionComponent} from 'react';
-import {View} from 'react-native';
+import React from 'react';
 import {GlobalScreenTypes} from '../../configs/GlobalScreenTypes';
-import {Hheader} from '../../presenters';
+import {Hheader, HreminderCard} from '../../presenters';
 
 const DashboardScreen = ({navigation}: GlobalScreenTypes) => {
   return (
@@ -11,6 +10,7 @@ const DashboardScreen = ({navigation}: GlobalScreenTypes) => {
         text="Add Medication"
         onPressLeftAction={() => console.log('ADD')}
       />
+      <HreminderCard />
     </>
   );
 };
