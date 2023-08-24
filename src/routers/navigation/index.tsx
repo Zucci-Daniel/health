@@ -1,6 +1,6 @@
 import {NavigationContainer} from '@react-navigation/native';
 import {View} from 'react-native';
-import {Signup} from '../../screens/authentication';
+import {Login, OnboardingScreen, Signup} from '../../screens/authentication';
 import {Stack} from '../router-constants';
 import {routes} from '../router-constants/routes';
 
@@ -15,8 +15,9 @@ export function NavigationProvider() {
         screenOptions={{
           headerShown: false,
         }}>
+        <Stack.Screen name={routes.ONBOARDING} component={OnboardingScreen} />
         <Stack.Screen name={routes.SIGN_UP} component={Signup} />
-        <Stack.Screen name={routes.LOGIN} component={DummyScreen} />
+        <Stack.Screen name={routes.LOGIN} component={Login} />
       </Stack.Navigator>
     );
   }
@@ -34,7 +35,10 @@ export function NavigationProvider() {
   //-----
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator
+        screenOptions={{
+          headerShown: false,
+        }}>
         <Stack.Screen name={routes.AUTH} component={AuthNavigationProvider} />
         <Stack.Screen name={routes.APP} component={AppNavigationProvider} />
       </Stack.Navigator>

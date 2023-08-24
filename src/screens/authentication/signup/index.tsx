@@ -36,7 +36,7 @@ const Signup = ({navigation}: SignUpTypes) => {
           <Hbutton
             disabled={false}
             text="Continue"
-            // onPress={() => navigation.navigate(routes.ADD_PHOTO)}
+            onPress={() => navigation.navigate(routes.LOGIN)}
           />
         </View>
       </Hscreen>

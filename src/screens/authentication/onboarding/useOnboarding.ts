@@ -5,8 +5,9 @@ import {
   NativeSyntheticEvent,
   ScrollView,
 } from 'react-native';
+import {pallete} from '../../../configs/Colors';
 import {screenWidth} from '../../../configs/Constants';
-import {useColors} from '../../../hooks/useColor';
+import {NavigationType} from '../../../configs/GlobalScreenTypes';
 import {onBoardDataProps} from './type';
 
 const img: any =
@@ -14,37 +15,21 @@ const img: any =
 
 const onBoardingData: onBoardDataProps[] = [
   {
-    title: 'Skip the queue, with smart in-store pickup',
-    subTitle:
-      'Shop as much as you like from the comfort of your own home and pick up you’re ready.',
-    img: require('./../../../assets/images/1.png'),
-  },
-  {
-    title: 'Getting from the store to your door',
-    subTitle:
-      'Bringing convenience to your doorstep; reliable and fast delivery services.',
-    img: require('./../../../assets/images/1.png'),
-  },
-  {
-    title: 'Exclusive discounts and promotions just for you',
-    subTitle:
-      'Deals that make you smile: unmissable discounts and promotions up for grabs.',
-    img: require('./../../../assets/images/1.png'),
-  },
-  {
-    title: 'Your one-stop destination for quality & variety',
-    subTitle: '',
-    img: require('./../../../assets/images/1.png'),
+    title: 'Your Health, is your Wealth!',
+    subTitle: `Take it seriously or it won't take you seriously!`,
+    img: require('../../../assets/images/1.png'),
   },
 ];
 
-export const useOnboarding = (navigation: any /* TODO: TYPE THIS. */) => {
+export const useOnboarding = (
+  navigation: NavigationType /* TODO: TYPE THIS. */,
+) => {
   //
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [hidePreviousButton, setHidePreviousButton] = useState(true);
   const scrollX = React.useRef(new Animated.Value(0)).current;
   const scrollRef = useRef<ScrollView>(null);
-  const colors = useColors();
+  const colors = pallete;
 
   useEffect(() => {
     scrollRef?.current?.scrollTo({

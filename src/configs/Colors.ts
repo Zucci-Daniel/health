@@ -12,7 +12,7 @@ export type palleteTypes = {
 };
 
 export const pallete: palleteTypes = {
-  dark: '#28166F',
+  dark: '#0086D6',
   light: '#fff',
   text: '#222222',
   para: '#555555',

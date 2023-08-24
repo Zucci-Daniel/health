@@ -24,7 +24,7 @@ export const onboardingStyles = () =>
       paddingTop: 16,
     },
     buttonWrapper: {
-      paddingHorizontal: 16,
+      padding: 16,
     },
     imageContainer: {
       flex: 1,
