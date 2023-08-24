@@ -1,0 +1,3 @@
+export const STORAGE_CONSTANTS = {
+  STORE_USER_INFO: 'STORE_USER_INFO',
+};

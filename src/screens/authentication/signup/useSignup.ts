@@ -1,5 +1,7 @@
 import {useState} from 'react';
 import {NavigationType} from '../../../configs/GlobalScreenTypes';
+import {storeItem} from '../../../helpers/localStorage';
+import {STORAGE_CONSTANTS} from '../../../helpers/storageConstants';
 import {routes} from '../../../routers/router-constants/routes';
 
 export const useSignUp = (navigation: NavigationType) => {
@@ -16,6 +18,9 @@ export const useSignUp = (navigation: NavigationType) => {
       name,
       password,
     };
+    //--- for simplicity, i'll store the password in a list of password in my local storage
+    // to mimick a really basic flow, i'll just add it to my list of passwords in my local storage.
+    storeItem(STORAGE_CONSTANTS.STORE_USER_INFO, payload);
     navigation.navigate(routes.LOGIN);
   };
 
