@@ -1,3 +1,3 @@
 import Hbutton from './h-button';
-
-export {Hbutton};
+import Hinput from './h-input';
+export {Hbutton, Hinput};

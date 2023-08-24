@@ -21,13 +21,7 @@ const Hbutton: FunctionComponent<HbuttonTypes> = ({
       isCentered={isCentered}
       disabled={disabled}
       onPress={onPress}>
-      <AppText
-        text={text}
-        styles={
-          Typo(type == 'normal' ? null : textColor ? textColor : pallete.dark)
-            .Button
-        }
-      />
+      <AppText text={text} styles={Typo(pallete.light).Button} />
     </AppButton>
   );
 };
