@@ -21,4 +21,14 @@ export const DashboardScreenStyles = StyleSheet.create({
     paddingTop: 30,
     paddingBottom: 50,
   },
+  periodRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItem: 'space-between',
+  },
+  time: {
+    height: 50,
+    width: '100%',
+    backgroundColor: 'red',
+  },
 });

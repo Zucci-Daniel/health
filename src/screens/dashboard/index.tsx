@@ -11,6 +11,34 @@ import {DashboardScreenStyles} from './styles';
 import ToggleSwitch from 'toggle-switch-react-native';
 import {pallete} from '../../configs/Colors';
 
+const Period = ({
+  day = 'Afternoon',
+}: {
+  day: 'Morning' | 'Afternoon' | 'Evening';
+}) => {
+  const [time, setTime] = useState();
+  const [showTime, setShowTime] = useState(false);
+
+  return (
+    <>
+      <View style={DashboardScreenStyles.periodRow}>
+        <AppText styles={Typo().P4} text={`Taken in the ${day}`} />
+
+        <ToggleSwitch
+          isOn={showTime}
+          onColor={pallete.success}
+          offColor={pallete.screen}
+          size="medium"
+          onToggle={() => {
+            setShowTime(!showTime);
+          }}
+        />
+      </View>
+      {showTime && <View style={DashboardScreenStyles.time}></View>}
+    </>
+  );
+};
+
 const DashboardScreen = ({navigation}: GlobalScreenTypes) => {
   const addMedSheetRef = useRef(null);
   const updateMedSheetRef = useRef(null);
@@ -85,13 +113,13 @@ const DashboardScreen = ({navigation}: GlobalScreenTypes) => {
               placeHolder={label}
             />
           ))}
-          <ToggleSwitch
-            isOn={true}
-            onColor={pallete.success}
-            offColor={pallete.text}
-            size="medium"
-            onToggle={() => null}
+          <AppText
+            styles={Typo(pallete.dark).Button}
+            text={`When should you take this drug? 🙂`}
           />
+          {['Morning', 'Afternoon', 'Evening'].map((period, index) => (
+            <Period day={period} key={index} />
+          ))}
           <Hbutton text="Add to medications" onPress={handleAddMed} />
         </View>
       </AppSheet>
