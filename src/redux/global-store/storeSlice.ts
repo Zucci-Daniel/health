@@ -2,9 +2,8 @@ import {createSlice} from '@reduxjs/toolkit';
 import {storeState} from './type';
 
 const initialState: storeState = {
-  user: {
-    name: 'daniel',
-  },
+  user: null,
+  seenAuser: false,
 };
 
 export const storeSlice = createSlice({
@@ -12,9 +11,12 @@ export const storeSlice = createSlice({
   initialState,
   reducers: {
     reset: (state: any) => {},
+    setCurrentUser: (state: any, action) => {
+      state.user = action.payload;
+    },
   },
   extraReducers: builder => {},
 });
 
-export const {reset} = storeSlice.actions;
+export const {reset, setCurrentUser} = storeSlice.actions;
 export const storeReducer = storeSlice.reducer;

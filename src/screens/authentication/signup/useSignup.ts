@@ -20,7 +20,10 @@ export const useSignUp = (navigation: NavigationType) => {
     };
     //--- for simplicity, i'll store the password in a list of password in my local storage
     // to mimick a really basic flow, i'll just add it to my list of passwords in my local storage.
+    //-- WHEN LOGGING OUT, DON'T REMOVE THIS INFORMATION, ONLY REMOVE THE CURRENT USER.
     storeItem(payload.password, payload);
+    //set the current user
+    storeItem(STORAGE_CONSTANTS.CURRENT_USER_INFO, payload);
     navigation.navigate(routes.LOGIN);
   };
 
