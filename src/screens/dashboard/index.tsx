@@ -8,6 +8,8 @@ import {useSheet} from '../../hooks/useSheet';
 import {Hbutton, Hheader, Hinput, HreminderCard} from '../../presenters';
 import {AppSheet, AppText} from '../../reusables';
 import {DashboardScreenStyles} from './styles';
+import ToggleSwitch from 'toggle-switch-react-native';
+import {pallete} from '../../configs/Colors';
 
 const DashboardScreen = ({navigation}: GlobalScreenTypes) => {
   const addMedSheetRef = useRef(null);
@@ -83,6 +85,13 @@ const DashboardScreen = ({navigation}: GlobalScreenTypes) => {
               placeHolder={label}
             />
           ))}
+          <ToggleSwitch
+            isOn={true}
+            onColor={pallete.success}
+            offColor={pallete.text}
+            size="medium"
+            onToggle={() => null}
+          />
           <Hbutton text="Add to medications" onPress={handleAddMed} />
         </View>
       </AppSheet>
