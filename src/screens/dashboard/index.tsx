@@ -6,8 +6,8 @@ const DashboardScreen = ({navigation}: GlobalScreenTypes) => {
   return (
     <>
       <Hheader
-        title="Your medications"
-        text="Add Medication"
+        title="Upcoming Medications"
+        text="Add Med"
         onPressLeftAction={() => console.log('ADD')}
       />
       <HreminderCard />
