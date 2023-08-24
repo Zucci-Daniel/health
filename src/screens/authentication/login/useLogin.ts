@@ -2,8 +2,11 @@ import {useState} from 'react';
 import {NavigationType} from '../../../configs/GlobalScreenTypes';
 import {logThis} from '../../../helpers';
 import {getItem} from '../../../helpers/localStorage';
+import {useSilentToast} from '../../../presenters/h-toast';
 
 export const useLogin = (navigation: NavigationType) => {
+  const showToast = useSilentToast();
+
   const [password, setPassword] = useState('');
 
   const shouldDisableButton = () => {
@@ -22,10 +25,11 @@ export const useLogin = (navigation: NavigationType) => {
     logThis('user info==> ', userInfo);
 
     if (userInfo) {
-      //navigate to app
+      //change the app state, and unmount the auth state.
       // navigation.navigate(routes.LOGIN);
     } else {
       //show a toast.
+      showToast('error', "can't find you");
     }
   };
 
