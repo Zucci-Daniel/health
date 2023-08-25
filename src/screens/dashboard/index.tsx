@@ -102,7 +102,7 @@ const DashboardScreen = ({}: GlobalScreenTypes) => {
       <View style={DashboardScreenStyles.name}>
         <AppText
           styles={Typo(pallete.dark, null, null, null, 'left').h4}
-          text={`Hello ${user?.name}👨🏼‍⚕️`}
+          text={`Hello ${user?.name ?? '!'}👨🏼‍⚕️`}
         />
       </View>
 
