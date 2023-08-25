@@ -2,7 +2,8 @@ import {useState} from 'react';
 import {useDispatch} from 'react-redux';
 import {NavigationType} from '../../../configs/GlobalScreenTypes';
 import {logThis} from '../../../helpers';
-import {getItem} from '../../../helpers/localStorage';
+import {getItem, storeItem} from '../../../helpers/localStorage';
+import {STORAGE_CONSTANTS} from '../../../helpers/storageConstants';
 import {useSilentToast} from '../../../presenters/h-toast';
 import {setCurrentUser} from '../../../redux/global-store/storeSlice';
 
@@ -30,10 +31,12 @@ export const useLogin = (navigation: NavigationType) => {
     if (userInfo) {
       //change the app state, and unmount the auth state.
       // navigation.navigate(routes.LOGIN);
-      dispatch(setCurrentUser(userInfo));
+      logThis(userInfo, ' user info');
+      dispatch(setCurrentUser(JSON.parse(userInfo)));
+      storeItem(STORAGE_CONSTANTS.CURRENT_USER_INFO, userInfo);
     } else {
       //show a toast.
-      showToast('error', "can't find you");
+      showToast('error', "User Don't exist, Please check password again!");
     }
   };
 

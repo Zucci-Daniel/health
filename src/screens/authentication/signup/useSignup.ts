@@ -1,7 +1,6 @@
 import {useState} from 'react';
 import {NavigationType} from '../../../configs/GlobalScreenTypes';
 import {storeItem} from '../../../helpers/localStorage';
-import {STORAGE_CONSTANTS} from '../../../helpers/storageConstants';
 import {routes} from '../../../routers/router-constants/routes';
 
 export const useSignUp = (navigation: NavigationType) => {
@@ -22,8 +21,7 @@ export const useSignUp = (navigation: NavigationType) => {
     // to mimick a really basic flow, i'll just add it to my list of passwords in my local storage.
     //-- WHEN LOGGING OUT, DON'T REMOVE THIS INFORMATION, ONLY REMOVE THE CURRENT USER.
     storeItem(payload.password, payload);
-    //set the current user
-    storeItem(STORAGE_CONSTANTS.CURRENT_USER_INFO, payload);
+
     navigation.navigate(routes.LOGIN);
   };
 

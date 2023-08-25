@@ -81,6 +81,7 @@ const DashboardScreen = ({}: GlobalScreenTypes) => {
     updateMedication,
     finalUpdate,
     isUpdating,
+    user,
   } = useDashboard();
 
   const renderCards = (item: MedicationReminder, _: number) => {
@@ -101,7 +102,7 @@ const DashboardScreen = ({}: GlobalScreenTypes) => {
       <View style={DashboardScreenStyles.name}>
         <AppText
           styles={Typo(pallete.dark, null, null, null, 'left').h4}
-          text={`Hello Franklyn`}
+          text={`Hello ${user?.name}👨🏼‍⚕️`}
         />
       </View>
 

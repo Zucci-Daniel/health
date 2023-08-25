@@ -1,9 +1,12 @@
 import {useRef, useState} from 'react';
+import {useSelector} from 'react-redux';
 import {generateUniqueId} from '../../helpers/general';
 import {useSheet} from '../../hooks/useSheet';
+import {storeSliceType} from '../../redux/storeType';
 import {inputType, MedicationReminder} from './type';
 
 export const useDashboard = () => {
+  const {user} = useSelector((state: storeSliceType) => state.storeReducer);
   const addMedSheetRef = useRef(null);
 
   const {closeSheet, openSheet} = useSheet(addMedSheetRef);
@@ -110,5 +113,6 @@ export const useDashboard = () => {
     closeUpdateSheet,
     isUpdating,
     finalUpdate,
+    user,
   };
 };
