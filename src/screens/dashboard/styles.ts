@@ -1,4 +1,6 @@
 import {StyleSheet} from 'react-native';
+import {pallete} from '../../configs/Colors';
+import {Padding} from '../../configs/Constants';
 import {GlobalScreen} from '../../configs/GlobalStyles';
 
 export const DashboardScreenStyles = StyleSheet.create({
@@ -36,5 +38,10 @@ export const DashboardScreenStyles = StyleSheet.create({
     height: 300,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  name: {
+    paddingHorizontal: Padding,
+    paddingTop: Padding / 2,
+    backgroundColor: pallete.screen,
   },
 });

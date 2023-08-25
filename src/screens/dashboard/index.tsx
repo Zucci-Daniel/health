@@ -80,7 +80,6 @@ const DashboardScreen = ({}: GlobalScreenTypes) => {
     handleDeleteMedication,
     updateMedication,
     finalUpdate,
-    closeUpdateSheet,
     isUpdating,
   } = useDashboard();
 
@@ -99,6 +98,13 @@ const DashboardScreen = ({}: GlobalScreenTypes) => {
 
   return (
     <>
+      <View style={DashboardScreenStyles.name}>
+        <AppText
+          styles={Typo(pallete.dark, null, null, null, 'left').h4}
+          text={`Hello Franklyn`}
+        />
+      </View>
+
       <Hheader
         title="Upcoming Medications"
         text="Add Med"
@@ -112,7 +118,7 @@ const DashboardScreen = ({}: GlobalScreenTypes) => {
         ListEmptyComponent={() => (
           <View style={DashboardScreenStyles.emptyContainer}>
             <AppText
-              styles={Typo(pallete.dark, null, null, null, 'center').h4}
+              styles={Typo(pallete.borderColor, null, null, null, 'center').P5}
               text={`No medication set yet! click the "Add Med" to start`}
             />
           </View>
@@ -121,6 +127,7 @@ const DashboardScreen = ({}: GlobalScreenTypes) => {
           <View style={DashboardScreenStyles.separator} />
         )}
       />
+
       <AppSheet adjustToContentHeight={true} sheetRef={addMedSheetRef}>
         <View style={DashboardScreenStyles.sheetContainer}>
           <AppText styles={Typo().h4} text={`Tell me your medication 🙂`} />
