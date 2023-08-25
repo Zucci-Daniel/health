@@ -1,5 +1,5 @@
-import React, {useRef, useState} from 'react';
-import {View} from 'react-native';
+import React, {useEffect, useRef, useState} from 'react';
+import {TouchableOpacity, View} from 'react-native';
 import {GlobalScreenTypes} from '../../configs/GlobalScreenTypes';
 import {Typo} from '../../configs/Typography';
 import {HflatScreen, Hscreen} from '../../containers';
@@ -10,31 +10,64 @@ import {AppSheet, AppText} from '../../reusables';
 import {DashboardScreenStyles} from './styles';
 import ToggleSwitch from 'toggle-switch-react-native';
 import {pallete} from '../../configs/Colors';
+import DatePicker from 'react-native-date-picker';
+import {convertToReadableTime, convertToTime} from '../../helpers/general';
+import {inputType, MedicationReminder} from './type';
 
 const Period = ({
   day = 'Afternoon',
+  getTime = (day: string, time: any) => ({day, time}),
 }: {
-  day: 'Morning' | 'Afternoon' | 'Evening';
+  day: string;
+  getTime?: (day: string, time: any) => void;
 }) => {
-  const [time, setTime] = useState();
+  const [time, setTime] = useState<any>();
   const [showTime, setShowTime] = useState(false);
+
+  useEffect(() => {
+    time && getTime(day, time);
+  }, [time]);
 
   return (
     <>
-      <View style={DashboardScreenStyles.periodRow}>
-        <AppText styles={Typo().P4} text={`Taken in the ${day}`} />
-
+      <TouchableOpacity
+        onPress={() => setShowTime(true)}
+        style={DashboardScreenStyles.periodRow}>
+        <AppText
+          styles={Typo().P1}
+          text={`Taken in the ${day} ${
+            time ? `(by ${convertToTime(time)})` : ''
+          }`}
+        />
         <ToggleSwitch
-          isOn={showTime}
+          isOn={time ? true : false}
           onColor={pallete.success}
           offColor={pallete.screen}
           size="medium"
           onToggle={() => {
-            setShowTime(!showTime);
+            if (time) {
+              setTime(null);
+            } else {
+              setShowTime(!showTime);
+            }
           }}
         />
-      </View>
-      {showTime && <View style={DashboardScreenStyles.time}></View>}
+      </TouchableOpacity>
+      {showTime && (
+        <DatePicker
+          mode="time"
+          modal
+          open={showTime}
+          date={time ? time : new Date()}
+          onConfirm={newTime => {
+            setShowTime(false);
+            setTime(newTime);
+          }}
+          onCancel={() => {
+            setShowTime(false);
+          }}
+        />
+      )}
     </>
   );
 };
@@ -46,19 +79,21 @@ const DashboardScreen = ({navigation}: GlobalScreenTypes) => {
     useSheet(addMedSheetRef);
   const {closeSheet, openSheet} = useSheet(addMedSheetRef);
   //
-  const [newMed, setNewMed] = useState({
+  const [newMed, setNewMed] = useState<MedicationReminder>({
     name: '',
     dosage: '',
-    frequency: [],
-    time: '',
+    time: [],
+    frequency: '', //
   });
+
+  const [medications, setMedications] = useState<Array<MedicationReminder>>([]);
 
   const onChangeNewMed = (field: any /* Zucci: TODO */, value: string) => {
     return setNewMed({...newMed, [field]: value});
   };
 
   //--- for adding
-  const inputs = [
+  const inputs: Array<inputType> = [
     {
       label: 'Enter Drug Name',
       value: newMed.name,
@@ -66,9 +101,16 @@ const DashboardScreen = ({navigation}: GlobalScreenTypes) => {
       //..add more.
     },
     {
-      label: 'Enter Dosage',
+      label: 'Enter Dosage e.g 2pills/1ml',
       value: newMed.dosage,
       onChangeText: (text: string) => onChangeNewMed('dosage', text),
+      //..add more.
+    },
+    {
+      label: 'How many days will you take this drug?',
+      value: `${newMed.frequency}`,
+      onChangeText: (text: string) => onChangeNewMed('frequency', text),
+      keyboardType: 'phone-pad',
       //..add more.
     },
   ];
@@ -76,16 +118,20 @@ const DashboardScreen = ({navigation}: GlobalScreenTypes) => {
   //--- for updating
 
   const handleAddMed = () => {
-    logThis(newMed, ' new med');
     closeSheet();
     setNewMed({
       dosage: '',
-      frequency: '',
       name: '',
-      time: '',
+      frequency: '',
+      time: [], //array of obj with period and time. {period:'Morning',time:'2023-08-25T18:03:48.000Z'}
     });
+
+    setMedications(prev => [...prev, newMed]);
   };
 
+  const renderCards = (item: MedicationReminder, index: number) => {
+    return <HreminderCard />;
+  };
   return (
     <>
       <Hheader
@@ -95,9 +141,9 @@ const DashboardScreen = ({navigation}: GlobalScreenTypes) => {
       />
 
       <HflatScreen
-        data={[1, 2, 3, 4, 5, 6, 7]}
+        data={medications}
         keyExtractor={(item, index) => `${item}${index}`}
-        renderItem={({item, index}) => <HreminderCard />}
+        renderItem={({item, index}) => renderCards(item, index)}
         ItemSeparatorComponent={() => (
           <View style={DashboardScreenStyles.separator} />
         )}
@@ -105,12 +151,13 @@ const DashboardScreen = ({navigation}: GlobalScreenTypes) => {
       <AppSheet adjustToContentHeight={true} sheetRef={addMedSheetRef}>
         <View style={DashboardScreenStyles.sheetContainer}>
           <AppText styles={Typo().h4} text={`Tell me your medication 🙂`} />
-          {inputs.map(({label, value, onChangeText}, index) => (
+          {inputs.map(({label, value, onChangeText, keyboardType}, index) => (
             <Hinput
               onChangeText={onChangeText}
               value={value}
               key={index}
               placeHolder={label}
+              keyboardType={keyboardType}
             />
           ))}
           <AppText
@@ -118,7 +165,13 @@ const DashboardScreen = ({navigation}: GlobalScreenTypes) => {
             text={`When should you take this drug? 🙂`}
           />
           {['Morning', 'Afternoon', 'Evening'].map((period, index) => (
-            <Period day={period} key={index} />
+            <Period
+              day={period}
+              key={index}
+              getTime={(day, time) =>
+                setNewMed({...newMed, time: [...newMed.time, {day, time}]})
+              }
+            />
           ))}
           <Hbutton text="Add to medications" onPress={handleAddMed} />
         </View>
