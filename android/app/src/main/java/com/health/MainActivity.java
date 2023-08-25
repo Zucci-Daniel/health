@@ -20,6 +20,18 @@ public class MainActivity extends ReactActivity {
     protected void onCreate(Bundle savedInstanceState) {
       super.onCreate(null);
     }
+  @Override
+    protected void onCreate(Bundle savedInstanceState) {
+      super.onCreate(savedInstanceState);
+
+      ComponentName receiver = new ComponentName(this, BootReceiver.class);
+      PackageManager packageManager = this.getPackageManager();
+
+      packageManager.setComponentEnabledSetting(receiver,
+              PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+              PackageManager.DONT_KILL_APP);
+  }
+
   /**
    * Returns the instance of the {@link ReactActivityDelegate}. Here we use a util class {@link
    * DefaultReactActivityDelegate} which allows you to easily enable Fabric and Concurrent React
@@ -33,4 +45,22 @@ public class MainActivity extends ReactActivity {
         // If you opted-in for the New Architecture, we enable the Fabric Renderer.
         DefaultNewArchitectureEntryPoint.getFabricEnabled());
   }
+
+  @Override
+  protected ReactActivityDelegate createReactActivityDelegate() {
+    return new ReactActivityDelegate(this, getMainComponentName()){
+      @Nullable
+      @Override
+      protected Bundle getLaunchOptions() {
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+
+        if(intent.getBooleanExtra("notiRemovable", true))
+          AlarmModule.stop(this.getContext());
+
+        return bundle;
+      }
+    };
+  }
+
 }
