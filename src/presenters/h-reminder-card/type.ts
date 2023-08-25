@@ -5,4 +5,6 @@ export type HreminderCardType = {
   frequency: string;
   dosage: string;
   time: Array<MedicationTime>;
+  onDelete?: () => void;
+  onUpdate?: () => void;
 };

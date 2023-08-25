@@ -3,7 +3,6 @@ import {TouchableOpacity, View} from 'react-native';
 import {GlobalScreenTypes} from '../../configs/GlobalScreenTypes';
 import {Typo} from '../../configs/Typography';
 import {HflatScreen, Hscreen} from '../../containers';
-import {logThis} from '../../helpers';
 import {useSheet} from '../../hooks/useSheet';
 import {Hbutton, Hheader, Hinput, HreminderCard} from '../../presenters';
 import {AppSheet, AppText} from '../../reusables';
@@ -11,7 +10,7 @@ import {DashboardScreenStyles} from './styles';
 import ToggleSwitch from 'toggle-switch-react-native';
 import {pallete} from '../../configs/Colors';
 import DatePicker from 'react-native-date-picker';
-import {convertToReadableTime, convertToTime} from '../../helpers/general';
+import {convertToTime, generateUniqueId} from '../../helpers/general';
 import {inputType, MedicationReminder} from './type';
 
 const Period = ({
@@ -80,6 +79,7 @@ const DashboardScreen = ({navigation}: GlobalScreenTypes) => {
   const {closeSheet, openSheet} = useSheet(addMedSheetRef);
   //
   const [newMed, setNewMed] = useState<MedicationReminder>({
+    id: '',
     name: '',
     dosage: '',
     time: [],
@@ -104,6 +104,8 @@ const DashboardScreen = ({navigation}: GlobalScreenTypes) => {
       label: 'Enter Dosage e.g 2pills/1ml',
       value: newMed.dosage,
       onChangeText: (text: string) => onChangeNewMed('dosage', text),
+      keyboardType: 'phone-pad',
+
       //..add more.
     },
     {
@@ -120,18 +122,33 @@ const DashboardScreen = ({navigation}: GlobalScreenTypes) => {
   const handleAddMed = () => {
     closeSheet();
     setNewMed({
+      id: '',
       dosage: '',
       name: '',
       frequency: '',
       time: [], //array of obj with period and time. {period:'Morning',time:'2023-08-25T18:03:48.000Z'}
     });
 
-    setMedications(prev => [...prev, newMed]);
+    setMedications(prev => [{...newMed, id: `${generateUniqueId()}`}, ...prev]);
   };
 
-  const renderCards = (item: MedicationReminder, index: number) => {
-    return <HreminderCard />;
+  const handleDeleteMedication = (id: string) => {
+    const filter = medications.filter(med => med.id !== id);
+    setMedications(filter);
   };
+
+  const renderCards = (item: MedicationReminder, _: number) => {
+    return (
+      <HreminderCard
+        dosage={item.dosage}
+        frequency={item.frequency}
+        name={item.name}
+        time={item.time}
+        onDelete={() => handleDeleteMedication(item.id)}
+      />
+    );
+  };
+
   return (
     <>
       <Hheader

@@ -16,6 +16,7 @@ export interface MedicationTime {
 }
 
 export interface MedicationReminder {
+  id: string;
   dosage: string;
   frequency: string;
   name: string;

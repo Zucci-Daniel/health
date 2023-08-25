@@ -11,21 +11,21 @@ const HreminderCard = ({
   dosage = '5ml',
   frequency = '5 days',
   name = 'Fozila Mcce',
+  onDelete,
+  onUpdate,
   time = [{day: 'Evening', time: new Date()}],
 }: HreminderCardType) => {
   const formatTimeArray = (): string => {
     const days = time.map(time => time.day);
-    const hasMorning = days.includes('Morning');
-    const hasEvening = days.includes('Evening');
+    const periods = ['Morning', 'Afternoon', 'Evening'];
+    const presentPeriods = periods.filter(period => days.includes(period));
 
-    if (hasMorning && hasEvening) {
-      return 'Morning/Evening';
-    } else if (hasMorning) {
-      return 'Morning';
-    } else if (hasEvening) {
-      return 'Evening';
-    } else {
+    if (presentPeriods.length === 0) {
       return '';
+    } else if (presentPeriods.length === 1) {
+      return presentPeriods[0];
+    } else {
+      return presentPeriods.join('/');
     }
   };
 
@@ -33,17 +33,17 @@ const HreminderCard = ({
     <View style={HreminderCardStyles.container}>
       <View style={HreminderCardStyles.row}>
         <AppText text={name} styles={Typo(pallete.dark).P3} />
-        <AppText text={frequency} styles={Typo(pallete.error).Button} />
+        <AppText text={`${frequency}x`} styles={Typo(pallete.error).Button} />
       </View>
       <View style={HreminderCardStyles.row}>
-        <AppText text={dosage} styles={Typo(pallete.error).P1} />
+        <AppText text={`${dosage}pills/take`} styles={Typo(pallete.error).P3} />
         <AppText text={formatTimeArray()} styles={Typo(pallete.text).Button} />
       </View>
       <View style={HreminderCardStyles.buttonRow}>
-        <TouchableOpacity style={HreminderCardStyles.delete}>
+        <TouchableOpacity onPress={onDelete} style={HreminderCardStyles.delete}>
           <AppText text={'Delete Med'} styles={Typo(pallete.light).Button2} />
         </TouchableOpacity>
-        <TouchableOpacity style={HreminderCardStyles.button}>
+        <TouchableOpacity onPress={onUpdate} style={HreminderCardStyles.button}>
           <AppText text={'Update Med'} styles={Typo(pallete.light).Button2} />
         </TouchableOpacity>
       </View>
