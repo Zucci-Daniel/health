@@ -31,4 +31,10 @@ export const DashboardScreenStyles = StyleSheet.create({
     width: '100%',
     backgroundColor: 'red',
   },
+  emptyContainer: {
+    flex: 1,
+    height: 300,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 });

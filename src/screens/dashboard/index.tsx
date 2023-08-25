@@ -1,19 +1,18 @@
-import React, {useRef, useState} from 'react';
+import React from 'react';
 import {TouchableOpacity, View} from 'react-native';
 import {GlobalScreenTypes} from '../../configs/GlobalScreenTypes';
 import {Typo} from '../../configs/Typography';
-import {HflatScreen, Hscreen} from '../../containers';
-import {useSheet} from '../../hooks/useSheet';
+import {HflatScreen} from '../../containers';
 import {Hbutton, Hheader, Hinput, HreminderCard} from '../../presenters';
 import {AppSheet, AppText} from '../../reusables';
 import {DashboardScreenStyles} from './styles';
 import ToggleSwitch from 'toggle-switch-react-native';
 import {pallete} from '../../configs/Colors';
 import DatePicker from 'react-native-date-picker';
-import {convertToTime, generateUniqueId} from '../../helpers/general';
-import {inputType, MedicationReminder} from './type';
+import {convertToTime} from '../../helpers/general';
+import {MedicationReminder} from './type';
 import {usePeriod} from './usePeriod';
-import {getItem} from '../../helpers/localStorage';
+import {useDashboard} from './useDashboard';
 
 // @reason: creating this component here because it's only used in this component alone.
 const Period = ({
@@ -69,71 +68,21 @@ const Period = ({
   );
 };
 
-const DashboardScreen = ({navigation}: GlobalScreenTypes) => {
-  const addMedSheetRef = useRef(null);
-  const updateMedSheetRef = useRef(null);
-  const {closeSheet: closeUpdateSheetRef, openSheet: openUpdateSheetRef} =
-    useSheet(addMedSheetRef);
-  const {closeSheet, openSheet} = useSheet(addMedSheetRef);
-  //
-  const [newMed, setNewMed] = useState<MedicationReminder>({
-    id: '',
-    name: '',
-    dosage: '',
-    time: [],
-    frequency: '', //
-  });
-
-  const [medications, setMedications] = useState<Array<MedicationReminder>>([]);
-
-  const onChangeNewMed = (field: any /* Zucci: TODO */, value: string) => {
-    return setNewMed({...newMed, [field]: value});
-  };
-
-  //--- for adding
-  const inputs: Array<inputType> = [
-    {
-      label: 'Enter Drug Name',
-      value: newMed.name,
-      onChangeText: (text: string) => onChangeNewMed('name', text),
-      //..add more.
-    },
-    {
-      label: 'Enter Dosage e.g 2pills/1ml',
-      value: newMed.dosage,
-      onChangeText: (text: string) => onChangeNewMed('dosage', text),
-      keyboardType: 'phone-pad',
-
-      //..add more.
-    },
-    {
-      label: 'How many days will you take this drug?',
-      value: `${newMed.frequency}`,
-      onChangeText: (text: string) => onChangeNewMed('frequency', text),
-      keyboardType: 'phone-pad',
-      //..add more.
-    },
-  ];
-
-  //--- for updating
-
-  const handleAddMed = () => {
-    closeSheet();
-    setNewMed({
-      id: '',
-      dosage: '',
-      name: '',
-      frequency: '',
-      time: [], //array of obj with period and time. {period:'Morning',time:'2023-08-25T18:03:48.000Z'}
-    });
-
-    setMedications(prev => [{...newMed, id: `${generateUniqueId()}`}, ...prev]);
-  };
-
-  const handleDeleteMedication = (id: string) => {
-    const filter = medications.filter(med => med.id !== id);
-    setMedications(filter);
-  };
+const DashboardScreen = ({}: GlobalScreenTypes) => {
+  const {
+    addMedSheetRef,
+    openSheet,
+    newMed,
+    setNewMed,
+    medications,
+    inputs,
+    handleAddMed,
+    handleDeleteMedication,
+    updateMedication,
+    finalUpdate,
+    closeUpdateSheet,
+    isUpdating,
+  } = useDashboard();
 
   const renderCards = (item: MedicationReminder, _: number) => {
     return (
@@ -143,6 +92,7 @@ const DashboardScreen = ({navigation}: GlobalScreenTypes) => {
         name={item.name}
         time={item.time}
         onDelete={() => handleDeleteMedication(item.id)}
+        onUpdate={() => updateMedication(item)}
       />
     );
   };
@@ -159,6 +109,14 @@ const DashboardScreen = ({navigation}: GlobalScreenTypes) => {
         data={medications}
         keyExtractor={(item, index) => `${item}${index}`}
         renderItem={({item, index}) => renderCards(item, index)}
+        ListEmptyComponent={() => (
+          <View style={DashboardScreenStyles.emptyContainer}>
+            <AppText
+              styles={Typo(pallete.dark, null, null, null, 'center').h4}
+              text={`No medication set yet! click the "Add Med" to start`}
+            />
+          </View>
+        )}
         ItemSeparatorComponent={() => (
           <View style={DashboardScreenStyles.separator} />
         )}
@@ -188,7 +146,10 @@ const DashboardScreen = ({navigation}: GlobalScreenTypes) => {
               }
             />
           ))}
-          <Hbutton text="Add to medications" onPress={handleAddMed} />
+          <Hbutton
+            text={isUpdating ? 'Update this medication' : 'Add to medications'}
+            onPress={isUpdating ? finalUpdate : handleAddMed}
+          />
         </View>
       </AppSheet>
     </>
