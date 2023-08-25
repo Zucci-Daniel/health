@@ -13,10 +13,10 @@ export const HHeaderStyles = (colors: palleteTypes) =>
       ...GlobalHeaderBorder,
     },
     button: {
-      borderWidth: 1,
-      borderColor: colors.borderColor,
+      borderWidth: 0,
       borderRadius: 24,
       paddingHorizontal: 30,
       paddingVertical: 6,
+      backgroundColor: colors.dark,
     },
   });

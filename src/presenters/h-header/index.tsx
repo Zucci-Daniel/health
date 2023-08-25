@@ -23,7 +23,7 @@ const Hheader: FunctionComponent<HheaderTypes> = ({
         <TouchableOpacity
           onPress={onPressLeftAction}
           style={HHeaderStyles(colors).button}>
-          <AppText text={text} styles={Typo(colors.text).Button} />
+          <AppText text={text} styles={Typo(colors.light).Button2} />
         </TouchableOpacity>
       ) : (
         <View style={{flex: 1}} />
