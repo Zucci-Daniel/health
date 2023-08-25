@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.19.3",
+    "@react-native-community/push-notification-ios": "^1.11.0",
     "@react-navigation/native": "^6.1.7",
     "@react-navigation/native-stack": "^6.9.13",
     "@reduxjs/toolkit": "^1.9.5",
@@ -23,8 +24,10 @@
     "react-native-gesture-handler": "^2.12.1",
     "react-native-modalize": "^2.1.1",
     "react-native-portalize": "^1.0.7",
+    "react-native-push-notification": "^8.1.1",
     "react-native-safe-area-context": "^4.7.1",
     "react-native-screens": "^3.24.0",
+    "react-native-simple-alarm": "^2.0.2",
     "react-native-uuid": "^2.0.1",
     "react-redux": "^8.1.2",
     "redux": "^4.2.1",
