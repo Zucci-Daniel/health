@@ -23,6 +23,7 @@ export const HinputStyles = (
       flex: 1,
       backgroundColor: 'transparent',
       paddingHorizontal: 15,
+      color: 'black',
     },
     icon: {
       padding: 10,
