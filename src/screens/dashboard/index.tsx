@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useRef, useState} from 'react';
 import {TouchableOpacity, View} from 'react-native';
 import {GlobalScreenTypes} from '../../configs/GlobalScreenTypes';
 import {Typo} from '../../configs/Typography';
@@ -12,7 +12,10 @@ import {pallete} from '../../configs/Colors';
 import DatePicker from 'react-native-date-picker';
 import {convertToTime, generateUniqueId} from '../../helpers/general';
 import {inputType, MedicationReminder} from './type';
+import {usePeriod} from './usePeriod';
+import {getItem} from '../../helpers/localStorage';
 
+// @reason: creating this component here because it's only used in this component alone.
 const Period = ({
   day = 'Afternoon',
   getTime = (day: string, time: any) => ({day, time}),
@@ -20,12 +23,7 @@ const Period = ({
   day: string;
   getTime?: (day: string, time: any) => void;
 }) => {
-  const [time, setTime] = useState<any>();
-  const [showTime, setShowTime] = useState(false);
-
-  useEffect(() => {
-    time && getTime(day, time);
-  }, [time]);
+  const {time, showTime, setTime, setShowTime} = usePeriod(getTime, day);
 
   return (
     <>
