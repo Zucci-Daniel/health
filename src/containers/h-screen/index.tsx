@@ -8,6 +8,7 @@ const Hscreen = ({children, hasPadding = true}: HScreenTypes) => {
   const colors = pallete;
   return (
     <ScrollView
+      keyboardShouldPersistTaps="handled"
       contentContainerStyle={{
         paddingBottom: 100,
       }}

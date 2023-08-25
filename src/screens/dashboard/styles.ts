@@ -22,6 +22,7 @@ export const DashboardScreenStyles = StyleSheet.create({
     gap: 16,
     paddingTop: 30,
     paddingBottom: 50,
+    backgroundColor: pallete.screen,
   },
   periodRow: {
     flexDirection: 'row',

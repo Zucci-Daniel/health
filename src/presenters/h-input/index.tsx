@@ -28,6 +28,7 @@ const Hinput: FunctionComponent<HinputTypes> = ({
     <View style={HinputStyles(colors, isFocused, isJustInput).container}>
       <TextInput
         keyboardType={keyboardType}
+        placeholderTextColor="gray"
         autoCapitalize="none"
         value={value}
         onChangeText={onChangeText}
