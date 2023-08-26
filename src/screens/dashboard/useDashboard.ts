@@ -1,23 +1,24 @@
 import {useEffect, useRef, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {generateUniqueId} from '../../helpers/general';
-import {useSheet} from '../../hooks/useSheet';
-import {storeSliceType} from '../../redux/storeType';
-import {inputType, MedicationReminder} from './type';
 import notifee, {
   AndroidImportance,
   TimestampTrigger,
   TriggerType,
 } from '@notifee/react-native';
-import {logThis} from '../../helpers';
+import {generateUniqueId} from '../../helpers/general';
+import {useSheet} from '../../hooks/useSheet';
+import {storeSliceType} from '../../redux/storeType';
+import {inputType, MedicationReminder} from './type';
 import {setCurrentUser} from '../../redux/global-store/storeSlice';
 
 export const useDashboard = () => {
   const dispatch: any = useDispatch();
-  const {user} = useSelector((state: storeSliceType) => state.storeReducer);
   const addMedSheetRef = useRef(null);
+  //accessing the user state from redux
+  const {user} = useSelector((state: storeSliceType) => state.storeReducer);
 
   const {closeSheet, openSheet} = useSheet(addMedSheetRef);
+  //local states
   const [isUpdating, setIsUpdating] = useState(false);
   const [newMed, setNewMed] = useState<MedicationReminder>({
     id: '',
@@ -29,11 +30,6 @@ export const useDashboard = () => {
 
   const [medications, setMedications] = useState<Array<MedicationReminder>>([]);
 
-  const onChangeNewMed = (field: string, value: string) => {
-    return setNewMed({...newMed, [field]: value});
-  };
-
-  //--- for adding
   const inputs: Array<inputType> = [
     {
       label: 'Enter Drug Name',
@@ -57,12 +53,16 @@ export const useDashboard = () => {
     },
   ];
 
-  //a second check incase the user name is lost. (serving as unauthorized error)
+  //a second check incase the user name is lost. (serving as unauthorized error 401)
   useEffect(() => {
     if (!user?.name) {
       dispatch(setCurrentUser(null));
     }
   }, []);
+
+  const onChangeNewMed = (field: string, value: string) => {
+    return setNewMed({...newMed, [field]: value});
+  };
 
   const handleAddMed = async () => {
     // Close sheet
@@ -127,7 +127,7 @@ export const useDashboard = () => {
   const shouldDisableButton = () => {
     const isAnyFieldEmpty = (object: MedicationReminder) =>
       Object.keys(object)
-        .filter(key => key !== 'id')
+        .filter(key => key !== 'id') //excluding the id, since it'll be added on submit.
         .some(key => {
           const value = object[key as keyof MedicationReminder];
           if (Array.isArray(value)) {
@@ -135,25 +135,26 @@ export const useDashboard = () => {
           } else if (typeof value === 'string') {
             return value === '';
           } else {
-            return false; // Handle other types here if needed
+            return false;
           }
         });
 
     const response = isAnyFieldEmpty(newMed);
-    logThis(response, ' is empty', newMed);
     return response;
   };
 
   const onCreateTriggerNotification = async (time: number, message: string) => {
-    // Create a time-based trigger
+    const channelID: string = 'health';
+    //schedule a reminder
     const trigger: TimestampTrigger = {
       type: TriggerType.TIMESTAMP,
       timestamp: time,
       alarmManager: true,
     };
 
+    //create a notification channel
     await notifee.createChannel({
-      id: 'Health',
+      id: channelID,
       name: `Health Medication Reminder`,
       lights: false,
       vibration: true,
@@ -170,9 +171,9 @@ export const useDashboard = () => {
           user?.name !== '' && user?.name !== undefined
             ? ` ${user?.name}!`
             : '!'
-        }, ${message}`,
+        }, ${message}`, // just making up readable strings
         android: {
-          channelId: 'Health',
+          channelId: channelID,
         },
       },
       trigger,

@@ -2,6 +2,7 @@ import {useState} from 'react';
 import {NavigationType} from '../../../configs/GlobalScreenTypes';
 import {storeItem} from '../../../helpers/localStorage';
 import {routes} from '../../../routers/router-constants/routes';
+import {SignupInputTypes} from './type';
 
 export const useSignUp = (navigation: NavigationType) => {
   const [name, setName] = useState('');
@@ -25,6 +26,21 @@ export const useSignUp = (navigation: NavigationType) => {
     navigation.navigate(routes.LOGIN);
   };
 
+  const inputs: Array<SignupInputTypes> = [
+    {
+      label: 'Enter Name',
+      value: name,
+      onChangeText: (text: string) => setName(text),
+      //..add more.
+    },
+    {
+      label: 'Enter a Password',
+      value: password,
+      onChangeText: (text: string) => setPassword(text),
+      //..add more.
+    },
+  ];
+
   return {
     name,
     setName,
@@ -32,5 +48,6 @@ export const useSignUp = (navigation: NavigationType) => {
     setPassword,
     handleSignup,
     shouldDisableButton,
+    inputs,
   };
 };

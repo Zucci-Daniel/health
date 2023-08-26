@@ -7,33 +7,11 @@ import {Hbutton, Hinput} from '../../../presenters';
 import {AppText} from '../../../reusables';
 import {routes} from '../../../routers/router-constants/routes';
 import {SignUpStyles} from './styles';
-import {SignupInputTypes, SignUpTypes} from './type';
+import {SignUpTypes} from './type';
 import {useSignUp} from './useSignup';
 
 const Signup = ({navigation}: SignUpTypes) => {
-  const {
-    name,
-    password,
-    setName,
-    setPassword,
-    handleSignup,
-    shouldDisableButton,
-  } = useSignUp(navigation);
-
-  const inputs: Array<SignupInputTypes> = [
-    {
-      label: 'Enter Name',
-      value: name,
-      onChangeText: (text: string) => setName(text),
-      //..add more.
-    },
-    {
-      label: 'Enter a Password',
-      value: password,
-      onChangeText: (text: string) => setPassword(text),
-      //..add more.
-    },
-  ];
+  const {handleSignup, shouldDisableButton, inputs} = useSignUp(navigation);
 
   return (
     <>
