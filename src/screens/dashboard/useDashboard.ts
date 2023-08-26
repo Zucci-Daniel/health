@@ -1,25 +1,23 @@
 import {useEffect, useRef, useState} from 'react';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {generateUniqueId} from '../../helpers/general';
 import {useSheet} from '../../hooks/useSheet';
 import {storeSliceType} from '../../redux/storeType';
 import {inputType, MedicationReminder} from './type';
-//---
-import {createAlarm, getAlarms} from 'react-native-simple-alarm';
 import notifee, {
   AndroidImportance,
   TimestampTrigger,
   TriggerType,
 } from '@notifee/react-native';
-
 import {logThis} from '../../helpers';
+import {setCurrentUser} from '../../redux/global-store/storeSlice';
 
 export const useDashboard = () => {
+  const dispatch: any = useDispatch();
   const {user} = useSelector((state: storeSliceType) => state.storeReducer);
   const addMedSheetRef = useRef(null);
 
   const {closeSheet, openSheet} = useSheet(addMedSheetRef);
-  //
   const [isUpdating, setIsUpdating] = useState(false);
   const [newMed, setNewMed] = useState<MedicationReminder>({
     id: '',
@@ -59,7 +57,12 @@ export const useDashboard = () => {
     },
   ];
 
-  //--- for updating
+  //a second check incase the user name is lost. (serving as unauthorized error)
+  useEffect(() => {
+    if (!user?.name) {
+      dispatch(setCurrentUser(null));
+    }
+  }, []);
 
   const handleAddMed = async () => {
     // Close sheet
@@ -68,10 +71,13 @@ export const useDashboard = () => {
     // Add medication to the med array
     setMedications(prev => [{...newMed, id: `${generateUniqueId()}`}, ...prev]);
 
-    // Create alarms for each time in the array
+    // Create reminders for each time in the array
     await Promise.all(
       newMed.time.map(async item => {
-        await onCreateTriggerNotification(item.time.getTime());
+        await onCreateTriggerNotification(
+          item.time.getTime(),
+          `It's time to take your ${newMed.name} drug, please do take it!`,
+        );
       }),
     );
 
@@ -91,7 +97,7 @@ export const useDashboard = () => {
   };
 
   const updateMedication = (item: MedicationReminder) => {
-    //set the whole med to the stat.
+    //set the whole med to the state.
     setIsUpdating(true);
     setNewMed(item);
     openSheet();
@@ -118,59 +124,37 @@ export const useDashboard = () => {
     });
   };
 
-  //--create an alarm
+  const shouldDisableButton = () => {
+    const isAnyFieldEmpty = (object: MedicationReminder) =>
+      Object.keys(object)
+        .filter(key => key !== 'id')
+        .some(key => {
+          const value = object[key as keyof MedicationReminder];
+          if (Array.isArray(value)) {
+            return value.length === 0;
+          } else if (typeof value === 'string') {
+            return value === '';
+          } else {
+            return false; // Handle other types here if needed
+          }
+        });
 
-  const handleCreateAlarm = async (time: any, message: string) => {
-    try {
-      const payload = {
-        active: true,
-        date: time,
-        message: 'message',
-        snooze: 1,
-      };
-      const response = await createAlarm(payload);
-      //if response, meaning alarm is created.
-    } catch (e) {
-      logThis('error == >', e);
-    }
+    const response = isAnyFieldEmpty(newMed);
+    logThis(response, ' is empty', newMed);
+    return response;
   };
 
-  const handleGetAllAlarms = async () => {
-    try {
-      const alarms = await getAlarms();
-      console.log(alarms, ' all alarms');
-    } catch (e) {}
-  };
-  function shouldDisableButton(newMed: MedicationReminder): boolean {
-    for (const key in newMed) {
-      if (key === 'time') {
-        if (newMed[key as keyof MedicationReminder].length === 0) {
-          return true;
-        }
-      } else if (
-        typeof newMed[key as keyof MedicationReminder] === 'string' &&
-        `${newMed[key as keyof MedicationReminder]}`.trim() === ''
-      ) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  async function onCreateTriggerNotification(
-    time: number /*2023-08-26T12:43:00.000Z*/,
-  ) {
+  const onCreateTriggerNotification = async (time: number, message: string) => {
     // Create a time-based trigger
     const trigger: TimestampTrigger = {
       type: TriggerType.TIMESTAMP,
-      timestamp: time, // fire at 11:10am (10 minutes before meeting)
+      timestamp: time,
       alarmManager: true,
     };
-    console.log(trigger, ' triegger');
 
     await notifee.createChannel({
-      id: 'alarm',
-      name: 'Firing alarms & timers',
+      id: 'Health',
+      name: `Health Medication Reminder`,
       lights: false,
       vibration: true,
       importance: AndroidImportance.HIGH,
@@ -181,19 +165,19 @@ export const useDashboard = () => {
     // Create a trigger notification
     await notifee.createTriggerNotification(
       {
-        title: 'Meeting with Jane',
-        body: 'Today at 11:20am',
+        title: `Medication Reminder`,
+        body: `Hi${
+          user?.name !== '' && user?.name !== undefined
+            ? ` ${user?.name}!`
+            : '!'
+        }, ${message}`,
         android: {
-          channelId: 'alarm',
+          channelId: 'Health',
         },
       },
       trigger,
     );
-  }
-
-  useEffect(() => {
-    handleGetAllAlarms();
-  }, []);
+  };
 
   return {
     addMedSheetRef,

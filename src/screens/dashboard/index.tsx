@@ -156,7 +156,7 @@ const DashboardScreen = ({}: GlobalScreenTypes) => {
             />
           ))}
           <Hbutton
-            // disabled={shouldDisableButton()}
+            disabled={shouldDisableButton()}
             text={isUpdating ? 'Update this medication' : 'Add to medications'}
             onPress={isUpdating ? finalUpdate : handleAddMed}
           />

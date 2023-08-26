@@ -1,10 +1,11 @@
 import React from 'react';
-import {View} from 'react-native';
+import {TouchableOpacity, View} from 'react-native';
 import {GlobalFormHeaders} from '../../../configs/GlobalStyles';
 import {Typo} from '../../../configs/Typography';
 import {Hscreen} from '../../../containers';
 import {Hbutton, Hinput} from '../../../presenters';
 import {AppText} from '../../../reusables';
+import {routes} from '../../../routers/router-constants/routes';
 import {SignUpStyles} from './styles';
 import {SignupInputTypes, SignUpTypes} from './type';
 import {useSignUp} from './useSignup';
@@ -60,6 +61,15 @@ const Signup = ({navigation}: SignUpTypes) => {
             text="Continue"
             onPress={handleSignup}
           />
+          <TouchableOpacity onPress={() => navigation.navigate(routes.LOGIN)}>
+            <AppText
+              styles={[
+                Typo(null, null, null, null, 'center').P3,
+                {textDecorationLine: 'underline'},
+              ]}
+              text={`Login`}
+            />
+          </TouchableOpacity>
         </View>
       </Hscreen>
     </>
