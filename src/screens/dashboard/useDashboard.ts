@@ -176,6 +176,8 @@ export const useDashboard = () => {
       importance: AndroidImportance.HIGH,
     });
 
+    await notifee.requestPermission();
+
     // Create a trigger notification
     await notifee.createTriggerNotification(
       {
