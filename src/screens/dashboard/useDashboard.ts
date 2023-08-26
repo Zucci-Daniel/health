@@ -138,6 +138,21 @@ export const useDashboard = () => {
       console.log(alarms, ' all alarms');
     } catch (e) {}
   };
+  function shouldDisableButton(newMed: MedicationReminder): boolean {
+    for (const key in newMed) {
+      if (key === 'time') {
+        if (newMed[key as keyof MedicationReminder].length === 0) {
+          return true;
+        }
+      } else if (
+        typeof newMed[key as keyof MedicationReminder] === 'string' &&
+        `${newMed[key as keyof MedicationReminder]}`.trim() === ''
+      ) {
+        return true;
+      }
+    }
+    return false;
+  }
 
   useEffect(() => {
     handleGetAllAlarms();
@@ -159,5 +174,6 @@ export const useDashboard = () => {
     isUpdating,
     finalUpdate,
     user,
+    shouldDisableButton,
   };
 };
