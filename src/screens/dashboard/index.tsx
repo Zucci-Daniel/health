@@ -121,7 +121,7 @@ const DashboardScreen = ({}: GlobalScreenTypes) => {
           <View style={DashboardScreenStyles.emptyContainer}>
             <AppText
               styles={Typo(pallete.borderColor, null, null, null, 'center').P5}
-              text={`No medication set yet! click the "Add Med" to start`}
+              text={'No medication set yet! click the "Add Med" to start'}
             />
           </View>
         )}
@@ -132,7 +132,7 @@ const DashboardScreen = ({}: GlobalScreenTypes) => {
 
       <AppSheet adjustToContentHeight={true} sheetRef={addMedSheetRef}>
         <View style={DashboardScreenStyles.sheetContainer}>
-          <AppText styles={Typo().h4} text={`Tell me your medication 🙂`} />
+          <AppText styles={Typo().h4} text={'Tell me your medication 🙂'} />
           {inputs.map(({label, value, onChangeText, keyboardType}, index) => (
             <Hinput
               onChangeText={onChangeText}
@@ -144,7 +144,7 @@ const DashboardScreen = ({}: GlobalScreenTypes) => {
           ))}
           <AppText
             styles={Typo(pallete.dark).Button}
-            text={`When should you take this drug? 🙂`}
+            text={'When should you take this drug? 🙂'}
           />
           {['Morning', 'Afternoon', 'Evening'].map((period, index) => (
             <Period
