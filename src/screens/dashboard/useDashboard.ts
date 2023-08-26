@@ -6,6 +6,12 @@ import {storeSliceType} from '../../redux/storeType';
 import {inputType, MedicationReminder} from './type';
 //---
 import {createAlarm, getAlarms} from 'react-native-simple-alarm';
+import notifee, {
+  AndroidImportance,
+  TimestampTrigger,
+  TriggerType,
+} from '@notifee/react-native';
+
 import {logThis} from '../../helpers';
 
 export const useDashboard = () => {
@@ -65,10 +71,7 @@ export const useDashboard = () => {
     // Create alarms for each time in the array
     await Promise.all(
       newMed.time.map(async item => {
-        await handleCreateAlarm(
-          item.time,
-          `Please take your drugs by ${item.day}`,
-        );
+        await onCreateTriggerNotification(item.time.getTime());
       }),
     );
 
@@ -152,6 +155,38 @@ export const useDashboard = () => {
       }
     }
     return false;
+  }
+
+  async function onCreateTriggerNotification(
+    time: number /*2023-08-26T12:43:00.000Z*/,
+  ) {
+    // Create a time-based trigger
+    const trigger: TimestampTrigger = {
+      type: TriggerType.TIMESTAMP,
+      timestamp: time, // fire at 11:10am (10 minutes before meeting)
+      alarmManager: true,
+    };
+    console.log(trigger, ' triegger');
+
+    await notifee.createChannel({
+      id: 'alarm',
+      name: 'Firing alarms & timers',
+      lights: false,
+      vibration: true,
+      importance: AndroidImportance.HIGH,
+    });
+
+    // Create a trigger notification
+    await notifee.createTriggerNotification(
+      {
+        title: 'Meeting with Jane',
+        body: 'Today at 11:20am',
+        android: {
+          channelId: 'alarm',
+        },
+      },
+      trigger,
+    );
   }
 
   useEffect(() => {
