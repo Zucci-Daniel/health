@@ -9,7 +9,7 @@ import {HreminderCardType} from './type';
 
 const HreminderCard = ({
   dosage = '5ml',
-  frequency = '5 days',
+  frequency = 0,
   name = 'Fozila Mcce',
   onDelete,
   onUpdate,
@@ -34,7 +34,7 @@ const HreminderCard = ({
       <View style={HreminderCardStyles.row}>
         <AppText text={name} styles={Typo(pallete.para).h5} />
         <AppText
-          text={`For ${frequency} days`}
+          text={`For ${frequency} day${frequency > 1 ? 's' : ''}`}
           styles={Typo(pallete.error).Button}
         />
       </View>

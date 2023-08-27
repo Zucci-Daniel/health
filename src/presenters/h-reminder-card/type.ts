@@ -2,7 +2,7 @@ import {MedicationTime} from '../../screens/dashboard/type';
 
 export type HreminderCardType = {
   name: string;
-  frequency: string;
+  frequency: number;
   dosage: string;
   time: Array<MedicationTime>;
   onDelete?: () => void;

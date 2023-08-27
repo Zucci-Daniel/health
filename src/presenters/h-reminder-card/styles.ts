@@ -26,7 +26,6 @@ export const HreminderCardStyles = StyleSheet.create({
     borderRadius: Padding,
   },
   delete: {
-    paddingHorizontal: Padding,
     paddingVertical: Padding / 2,
     borderRadius: Padding,
   },
