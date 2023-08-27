@@ -91,7 +91,7 @@ const DashboardScreen = ({}: GlobalScreenTypes) => {
     return (
       <HreminderCard
         dosage={item.dosage}
-        frequency={item.frequency}
+        frequency={+item.frequency}
         name={item.name}
         time={item.time}
         onDelete={() => handleDeleteMedication(item.id)}

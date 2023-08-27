@@ -35,7 +35,7 @@ const HreminderCard = ({
         <AppText text={name} styles={Typo(pallete.para).h5} />
         <AppText
           text={`For ${frequency} day${frequency > 1 ? 's' : ''}`}
-          styles={Typo(pallete.error).Button}
+          styles={Typo(pallete.dark).Button}
         />
       </View>
       <View style={HreminderCardStyles.row}>

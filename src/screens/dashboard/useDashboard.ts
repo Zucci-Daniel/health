@@ -144,7 +144,11 @@ export const useDashboard = () => {
     return response;
   };
 
-  const onCreateTriggerNotification = async (time: number, message: string) => {
+  const onCreateTriggerNotification = async (
+    time: number,
+    message: string,
+    frequency: number,
+  ) => {
     try {
       const channelID: string = 'health';
       //schedule a reminder
@@ -152,6 +156,7 @@ export const useDashboard = () => {
         type: TriggerType.TIMESTAMP,
         timestamp: time,
         alarmManager: true,
+        repeatFrequency: frequency,
       };
 
       //create a notification channel
