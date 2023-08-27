@@ -13,6 +13,7 @@ import {convertToTime} from '../../helpers/general';
 import {MedicationReminder} from './type';
 import {usePeriod} from './usePeriod';
 import {useDashboard} from './useDashboard';
+import {DeleteIcon} from '../../assets/svg';
 
 // @reason: creating this component here because it's only used in this component alone.
 const Period = ({
@@ -110,7 +111,7 @@ const DashboardScreen = ({}: GlobalScreenTypes) => {
       <Hheader
         title="Upcoming Medications"
         text="Add Med"
-        onPressLeftAction={() => openSheet()}
+        showLeftAction={false}
       />
 
       <HflatScreen
@@ -129,6 +130,12 @@ const DashboardScreen = ({}: GlobalScreenTypes) => {
           <View style={DashboardScreenStyles.separator} />
         )}
       />
+
+      <TouchableOpacity
+        onPress={() => openSheet()}
+        style={DashboardScreenStyles.deleteIcon}>
+        <DeleteIcon />
+      </TouchableOpacity>
 
       <AppSheet adjustToContentHeight={true} sheetRef={addMedSheetRef}>
         <View style={DashboardScreenStyles.sheetContainer}>
@@ -155,6 +162,7 @@ const DashboardScreen = ({}: GlobalScreenTypes) => {
               }
             />
           ))}
+
           <Hbutton
             disabled={shouldDisableButton()}
             text={isUpdating ? 'Update this medication' : 'Add to medications'}

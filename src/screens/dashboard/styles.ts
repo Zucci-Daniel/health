@@ -45,4 +45,12 @@ export const DashboardScreenStyles = StyleSheet.create({
     paddingTop: Padding / 2,
     backgroundColor: pallete.screen,
   },
+  deleteIcon: {
+    padding: Padding,
+    backgroundColor: pallete.dark,
+    position: 'absolute',
+    bottom: 50,
+    right: 10,
+    borderRadius: 200,
+  },
 });
