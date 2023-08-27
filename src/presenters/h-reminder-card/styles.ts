@@ -7,6 +7,8 @@ export const HreminderCardStyles = StyleSheet.create({
     width: '100%',
     backgroundColor: 'white',
     padding: Padding,
+    borderBottomWidth: 0.5,
+    borderBottomColor: pallete.borderColor2,
   },
   row: {
     flexDirection: 'row',
@@ -15,17 +17,15 @@ export const HreminderCardStyles = StyleSheet.create({
   buttonRow: {
     flexDirection: 'row',
     justifyContent: 'flex-end',
-    gap: 20,
+    gap: 10,
     paddingTop: Padding / 2,
   },
   button: {
-    backgroundColor: pallete.dark,
     paddingHorizontal: Padding,
     paddingVertical: Padding / 2,
     borderRadius: Padding,
   },
   delete: {
-    backgroundColor: pallete.error,
     paddingHorizontal: Padding,
     paddingVertical: Padding / 2,
     borderRadius: Padding,

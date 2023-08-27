@@ -10,6 +10,7 @@ import {useSheet} from '../../hooks/useSheet';
 import {storeSliceType} from '../../redux/storeType';
 import {inputType, MedicationReminder} from './type';
 import {setCurrentUser} from '../../redux/global-store/storeSlice';
+import {logThis} from '../../helpers';
 
 export const useDashboard = () => {
   const dispatch: any = useDispatch();
@@ -144,40 +145,54 @@ export const useDashboard = () => {
   };
 
   const onCreateTriggerNotification = async (time: number, message: string) => {
-    const channelID: string = 'health';
-    //schedule a reminder
-    const trigger: TimestampTrigger = {
-      type: TriggerType.TIMESTAMP,
-      timestamp: time,
-      alarmManager: true,
-    };
+    try {
+      const channelID: string = 'health';
+      //schedule a reminder
+      const trigger: TimestampTrigger = {
+        type: TriggerType.TIMESTAMP,
+        timestamp: time,
+        alarmManager: true,
+      };
 
-    //create a notification channel
-    await notifee.createChannel({
-      id: channelID,
-      name: `Health Medication Reminder`,
-      lights: false,
-      vibration: true,
-      importance: AndroidImportance.HIGH,
-    });
+      //create a notification channel
+      await notifee.createChannel({
+        id: channelID,
+        name: `Health Medication Reminder`,
+        lights: false,
+        vibration: true,
+        importance: AndroidImportance.HIGH,
+      });
 
-    await notifee.requestPermission();
+      await notifee.requestPermission();
 
-    // Create a trigger notification
-    await notifee.createTriggerNotification(
-      {
-        title: `Medication Reminder`,
-        body: `Hi${
-          user?.name !== '' && user?.name !== undefined
-            ? ` ${user?.name}!`
-            : '!'
-        }, ${message}`, // just making up readable strings
-        android: {
-          channelId: channelID,
+      // Create a trigger notification
+      await notifee.createTriggerNotification(
+        {
+          title: `Medication Reminder`,
+          body: `Hi${
+            user?.name !== '' && user?.name !== undefined
+              ? ` ${user?.name}!`
+              : '!'
+          }, ${message}`, // just making up readable strings
+          android: {
+            channelId: channelID,
+          },
         },
-      },
-      trigger,
-    );
+        trigger,
+      );
+    } catch (error) {
+      logThis(error);
+    }
+  };
+
+  const onReset = () => {
+    setNewMed({
+      id: '',
+      dosage: '',
+      name: '',
+      frequency: '',
+      time: [], // array of obj with period and time. { period: 'Morning', time: '2023-08-25T18:03:48.000Z' }
+    });
   };
 
   return {
@@ -197,5 +212,6 @@ export const useDashboard = () => {
     finalUpdate,
     user,
     shouldDisableButton,
+    onReset,
   };
 };

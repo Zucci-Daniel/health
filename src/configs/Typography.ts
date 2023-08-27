@@ -61,7 +61,6 @@ export const Typo = (
       fontSize: fontSize || 22,
       fontWeight: fontWeight || fontFamily.Bold,
       color: color || pallete.text,
-      letterSpacing: -5,
       lineHeight: lineHeight || 26.4,
     },
     h6: {

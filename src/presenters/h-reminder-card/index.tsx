@@ -1,9 +1,9 @@
 import React from 'react';
 import {TouchableOpacity, View} from 'react-native';
+import {DeleteIcon, EditIcon} from '../../assets/svg';
 import {pallete} from '../../configs/Colors';
 import {Typo} from '../../configs/Typography';
 import {AppText} from '../../reusables';
-import {MedicationTime} from '../../screens/dashboard/type';
 import {HreminderCardStyles} from './styles';
 import {HreminderCardType} from './type';
 
@@ -30,24 +30,27 @@ const HreminderCard = ({
   };
 
   return (
-    <View style={HreminderCardStyles.container}>
+    <TouchableOpacity onPress={onUpdate} style={HreminderCardStyles.container}>
       <View style={HreminderCardStyles.row}>
-        <AppText text={name} styles={Typo(pallete.dark).P3} />
-        <AppText text={`${frequency}x`} styles={Typo(pallete.error).Button} />
+        <AppText text={name} styles={Typo(pallete.dark).h5} />
+        <AppText
+          text={`For ${frequency} days`}
+          styles={Typo(pallete.error).Button}
+        />
       </View>
       <View style={HreminderCardStyles.row}>
-        <AppText text={`${dosage}pills/take`} styles={Typo(pallete.error).P3} />
-        <AppText text={formatTimeArray()} styles={Typo(pallete.text).Button} />
+        <AppText
+          text={`${dosage}pills/take`}
+          styles={Typo(pallete.error).Caption}
+        />
+        <AppText text={formatTimeArray()} styles={Typo(pallete.text).Caption} />
       </View>
       <View style={HreminderCardStyles.buttonRow}>
         <TouchableOpacity onPress={onDelete} style={HreminderCardStyles.delete}>
-          <AppText text={'Delete Med'} styles={Typo(pallete.light).Button2} />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={onUpdate} style={HreminderCardStyles.button}>
-          <AppText text={'Update Med'} styles={Typo(pallete.light).Button2} />
+          <DeleteIcon />
         </TouchableOpacity>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

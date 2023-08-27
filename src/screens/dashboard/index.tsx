@@ -13,7 +13,7 @@ import {convertToTime} from '../../helpers/general';
 import {MedicationReminder} from './type';
 import {usePeriod} from './usePeriod';
 import {useDashboard} from './useDashboard';
-import {DeleteIcon} from '../../assets/svg';
+import {AddIcon, DeleteIcon} from '../../assets/svg';
 
 // @reason: creating this component here because it's only used in this component alone.
 const Period = ({
@@ -84,6 +84,7 @@ const DashboardScreen = ({}: GlobalScreenTypes) => {
     isUpdating,
     shouldDisableButton,
     user,
+    onReset,
   } = useDashboard();
 
   const renderCards = (item: MedicationReminder, _: number) => {
@@ -132,9 +133,12 @@ const DashboardScreen = ({}: GlobalScreenTypes) => {
       />
 
       <TouchableOpacity
-        onPress={() => openSheet()}
+        onPress={() => {
+          onReset();
+          openSheet();
+        }}
         style={DashboardScreenStyles.deleteIcon}>
-        <DeleteIcon />
+        <AddIcon />
       </TouchableOpacity>
 
       <AppSheet adjustToContentHeight={true} sheetRef={addMedSheetRef}>
