@@ -32,7 +32,7 @@ const HreminderCard = ({
   return (
     <TouchableOpacity onPress={onUpdate} style={HreminderCardStyles.container}>
       <View style={HreminderCardStyles.row}>
-        <AppText text={name} styles={Typo(pallete.dark).h5} />
+        <AppText text={name} styles={Typo(pallete.text).h5} />
         <AppText
           text={`For ${frequency} days`}
           styles={Typo(pallete.error).Button}
