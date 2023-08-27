@@ -13,7 +13,7 @@ export const DashboardScreenStyles = StyleSheet.create({
   },
   removePadding: {paddingBottom: 0},
   separator: {
-    height: 10,
+    height: 0,
   },
   sheetContainer: {
     width: '100%',
