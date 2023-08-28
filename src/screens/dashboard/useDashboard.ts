@@ -5,7 +5,6 @@ import notifee, {
   TimestampTrigger,
   TriggerType,
 } from '@notifee/react-native';
-import {generateUniqueId} from '../../helpers/general';
 import {useSheet} from '../../hooks/useSheet';
 import {storeSliceType} from '../../redux/storeType';
 import {inputType, MedicationReminder, MedicationTime} from './type';
