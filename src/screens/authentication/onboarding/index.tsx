@@ -1,8 +1,9 @@
 import React, {FunctionComponent} from 'react';
 import {Animated, TouchableOpacity, View} from 'react-native';
+import {NurseSvg} from '../../../assets/svg';
 import {Typo} from '../../../configs/Typography';
-import {Hbutton, Hindicator} from '../../../presenters';
-import {AppImage, AppText} from '../../../reusables';
+import {Hbutton} from '../../../presenters';
+import {AppText} from '../../../reusables';
 import {routes} from '../../../routers/router-constants/routes';
 import {onboardingStyles} from './styles';
 import {onBoardDataProps, OnboardingTypes} from './type';
@@ -17,10 +18,7 @@ const OnBoardView: FunctionComponent<{
       {data.map((obData: any, index: any) => (
         <View key={index} style={onboardingStyles().scrollContainer}>
           <View style={onboardingStyles().imageContainer}>
-            <AppImage
-              islocal={false}
-              uri="https://cdn.pixabay.com/photo/2017/03/14/03/20/woman-2141808_640.jpg"
-            />
+            <NurseSvg />
           </View>
           <View style={onboardingStyles().captions}>
             <AppText
@@ -45,19 +43,15 @@ const OnBoardView: FunctionComponent<{
 
 const OnboardingScreen = ({navigation}: OnboardingTypes) => {
   const {
-    hidePreviousButton,
     scrollX,
     scrollRef,
     uptSelectedIndex,
-    handleNext,
-    handlePrevious,
     onBoardingData,
     selectedIndex,
     colors,
   } = useOnboarding(navigation);
 
   return (
-    // <Hscreen hasPadding={false}>
     <View style={onboardingStyles().container}>
       {selectedIndex !== onBoardingData.length - 1 && (
         <TouchableOpacity style={onboardingStyles().skip}>
@@ -90,7 +84,6 @@ const OnboardingScreen = ({navigation}: OnboardingTypes) => {
         />
       </Animated.ScrollView>
     </View>
-    // </Hscreen>
   );
 };
 

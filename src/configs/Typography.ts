@@ -128,6 +128,14 @@ export const Typo = (
       color: color || pallete.text,
       lineHeight: lineHeight || 18,
     },
+    empty: {
+      flexWrap: 'wrap',
+      textAlign: align,
+      fontSize: fontSize || 14,
+      fontWeight: fontWeight || fontFamily.Medium,
+      color: color || pallete.text,
+      lineHeight: lineHeight || 18,
+    },
     Caption2: {
       flexWrap: 'wrap',
       textAlign: align,

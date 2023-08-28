@@ -2,7 +2,6 @@ import {useEffect, useRef, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import notifee, {
   AndroidImportance,
-  IntervalTrigger,
   TimestampTrigger,
   TriggerType,
 } from '@notifee/react-native';
@@ -73,19 +72,11 @@ export const useDashboard = () => {
     // Add medication to the med array
     setMedications(prev => [{...newMed, id: `${generateUniqueId()}`}, ...prev]);
 
-    // Create reminders for each time in the array
-    // await Promise.all(
-    //   newMed.time.map(async (item: MedicationTime) => {
-    //     await
-    //   }),
-    // );
-
     const response = await onCreateTriggerNotification(
       `It's time to take your ${newMed.name} drug, please do take it!`,
       +newMed.frequency,
       newMed.time,
     );
-    console.log('final wait ', response);
     // Reset the state.
     setNewMed({
       id: '',
@@ -260,14 +251,16 @@ export const useDashboard = () => {
   };
 
   const onReset = () => {
-    setIsUpdating(false);
-    setNewMed({
-      id: '',
-      dosage: '',
-      name: '',
-      frequency: '',
-      time: [],
-    });
+    if (isUpdating) {
+      setIsUpdating(false);
+      setNewMed({
+        id: '',
+        dosage: '',
+        name: '',
+        frequency: '',
+        time: [], // array of obj with period and time. { day: 'Morning', time: '2023-08-25T18:03:48.000Z' }
+      });
+    }
   };
 
   return {

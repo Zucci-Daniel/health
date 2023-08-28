@@ -10,20 +10,28 @@ import ToggleSwitch from 'toggle-switch-react-native';
 import {pallete} from '../../configs/Colors';
 import DatePicker from 'react-native-date-picker';
 import {convertToTime} from '../../helpers/general';
-import {MedicationReminder} from './type';
+import {MedicationReminder, MedicationTime} from './type';
 import {usePeriod} from './usePeriod';
 import {useDashboard} from './useDashboard';
-import {AddIcon, DeleteIcon} from '../../assets/svg';
+import {AddIcon, DeleteIcon, NurseSvg} from '../../assets/svg';
 
 // @reason: creating this component here because it's only used in this component alone.
 const Period = ({
   day = 'Afternoon',
   getTime = (day: string, time: any) => ({day, time}),
+  intialTime,
+  resetTimeCallback = () => null,
 }: {
   day: string;
   getTime?: (day: string, time: any) => void;
+  intialTime?: Date | undefined;
+  resetTimeCallback?: () => void;
 }) => {
-  const {time, showTime, setTime, setShowTime} = usePeriod(getTime, day);
+  const {time, showTime, setTime, setShowTime} = usePeriod(
+    getTime,
+    day,
+    intialTime,
+  );
 
   return (
     <>
@@ -43,7 +51,8 @@ const Period = ({
           size="medium"
           onToggle={() => {
             if (time) {
-              setTime(null);
+              setTime(undefined);
+              resetTimeCallback();
             } else {
               setShowTime(!showTime);
             }
@@ -100,6 +109,32 @@ const DashboardScreen = ({}: GlobalScreenTypes) => {
     );
   };
 
+  //--take this out
+  const renderInitialTime = (period: string) => {
+    //loop through the newMed.time and check for the period that matches, then return the time for that period
+
+    const item = newMed.time.map((item, index) =>
+      item.day.toLowerCase() == period.toLowerCase() ? item.time : undefined,
+    );
+    console.log('THE TIME IS ', item[0]);
+    return item[0];
+  };
+  //--take this out
+  const removeInitialTime = (period: string) => {
+    //loop through the newMed.time and check for the period that matches, then return the time for that period
+
+    // const time: Array<MedicationTime> = newMed.time.map((item, index) => {
+
+    // }
+    // );
+
+    console.log(newMed, ' == ,');
+
+    // console.log(time, ' tiem');
+    //  setNewMed({...newMed,time})
+  };
+  //---
+
   return (
     <>
       <View style={DashboardScreenStyles.name}>
@@ -121,8 +156,9 @@ const DashboardScreen = ({}: GlobalScreenTypes) => {
         renderItem={({item, index}) => renderCards(item, index)}
         ListEmptyComponent={() => (
           <View style={DashboardScreenStyles.emptyContainer}>
+            <NurseSvg />
             <AppText
-              styles={Typo(pallete.borderColor, null, null, null, 'center').P5}
+              styles={Typo(pallete.para, null, null, null, 'center').empty}
               text={'No medication set yet! click the "Add Med" to start'}
             />
           </View>
@@ -141,7 +177,10 @@ const DashboardScreen = ({}: GlobalScreenTypes) => {
         <AddIcon />
       </TouchableOpacity>
 
-      <AppSheet adjustToContentHeight={true} sheetRef={addMedSheetRef}>
+      <AppSheet
+        onClose={() => onReset()}
+        adjustToContentHeight={true}
+        sheetRef={addMedSheetRef}>
         <View style={DashboardScreenStyles.sheetContainer}>
           <AppText styles={Typo().h4} text={'Tell me your medication 🙂'} />
           {inputs.map(({label, value, onChangeText, keyboardType}, index) => (
@@ -157,10 +196,12 @@ const DashboardScreen = ({}: GlobalScreenTypes) => {
             styles={Typo(pallete.dark).Button}
             text={'When should you take this drug? 🙂'}
           />
-          {['Morning', 'Afternoon', 'Evening'].map((period, index) => (
+          {['Morning', 'Afternoon', 'Evening'].map((period: string, index) => (
             <Period
               day={period}
+              intialTime={renderInitialTime(period)}
               key={index}
+              resetTimeCallback={() => removeInitialTime(period)}
               getTime={(day, time) =>
                 setNewMed({...newMed, time: [...newMed.time, {day, time}]})
               }
