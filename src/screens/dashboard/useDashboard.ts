@@ -247,11 +247,11 @@ export const useDashboard = () => {
   //--take this out
   const removeInitialTime = (period: string) => {
     //loop through the newMed.time and check for the period that matches, then return the time for that period
-    // const time: Array<MedicationTime> = newMed.time.map((item, index) => {
-    // }
-    // );
-    // console.log(time, ' tiem');
-    //  setNewMed({...newMed,time})
+    const time = newMed.time.filter((item, _) =>
+      item.day.toLowerCase() != period.toLowerCase() ? item : null,
+    );
+
+    setNewMed({...newMed, time});
   };
 
   const updateTime = (day: string, time: Date) => {
