@@ -1972,6 +1972,13 @@
     "@babel/runtime" "^7.12.5"
     react-error-boundary "^3.1.0"
 
+"@testing-library/react-native@^12.2.2":
+  version "12.2.2"
+  resolved "https://registry.npmjs.org/@testing-library/react-native/-/react-native-12.2.2.tgz#4b2275d5d1feb689c9b1e5cd9cb03ffe32a43228"
+  integrity sha512-aLr7YQ6pyn8PbLmdbtADG2aKcmarTLI7VhgWNVzJLxQHOtsDxLpJGKMSw10j406BE/GyGHbB0Gln3Of8/2TjnA==
+  dependencies:
+    pretty-format "^29.0.0"
+
 "@trysound/sax@0.2.0":
   version "0.2.0"
   resolved "https://registry.npmjs.org/@trysound/sax/-/sax-0.2.0.tgz#cccaab758af56761eb7bf37af6f03f326dd798ad"
@@ -4420,7 +4427,7 @@ jest-config@^29.6.4:
     slash "^3.0.0"
     strip-json-comments "^3.1.1"
 
-jest-diff@^29.6.4:
+jest-diff@^29.0.0, jest-diff@^29.6.4:
   version "29.6.4"
   resolved "https://registry.npmjs.org/jest-diff/-/jest-diff-29.6.4.tgz#85aaa6c92a79ae8cd9a54ebae8d5b6d9a513314a"
   integrity sha512-9F48UxR9e4XOEZvoUXEHSWY4qC4zERJaOfrbBg9JpbJOO43R1vN76REt/aMGZoY6GD5g84nnJiBIVlscegefpw==
@@ -4460,7 +4467,15 @@ jest-environment-node@^29.2.1, jest-environment-node@^29.6.4:
     jest-mock "^29.6.3"
     jest-util "^29.6.3"
 
-jest-get-type@^29.6.3:
+jest-extended@^4.0.1:
+  version "4.0.1"
+  resolved "https://registry.npmjs.org/jest-extended/-/jest-extended-4.0.1.tgz#2315cb5914fc132e5acd07945bfaa01aac3947c2"
+  integrity sha512-KM6dwuBUAgy6QONuR19CGubZB9Hkjqvl/d5Yc/FXsdB8+gsGxB2VQ+NEdOrr95J4GMPeLnDoPOKyi6+mKCCnZQ==
+  dependencies:
+    jest-diff "^29.0.0"
+    jest-get-type "^29.0.0"
+
+jest-get-type@^29.0.0, jest-get-type@^29.6.3:
   version "29.6.3"
   resolved "https://registry.npmjs.org/jest-get-type/-/jest-get-type-29.6.3.tgz#36f499fdcea197c1045a127319c0481723908fd1"
   integrity sha512-zrteXnqYxfQh7l5FHyL38jL39di8H8rHoecLH3JNxH3BwOrBsNeabdap5e0I23lD4HHI8W5VFBZqG4Eaq5LNcw==

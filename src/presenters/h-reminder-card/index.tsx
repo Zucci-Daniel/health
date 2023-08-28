@@ -1,6 +1,6 @@
 import React from 'react';
 import {TouchableOpacity, View} from 'react-native';
-import {DeleteIcon, EditIcon} from '../../assets/svg';
+import {DeleteIcon} from '../../assets/svg';
 import {pallete} from '../../configs/Colors';
 import {Typo} from '../../configs/Typography';
 import {convertToTime} from '../../helpers/general';
@@ -55,7 +55,11 @@ const HreminderCard = ({
         ))}
       </View>
       <View style={HreminderCardStyles.buttonRow}>
-        <TouchableOpacity onPress={onDelete} style={HreminderCardStyles.delete}>
+        <TouchableOpacity
+          onPress={onDelete}
+          style={HreminderCardStyles.delete}
+          testID="delete-button" // Add testID for testing
+        >
           <DeleteIcon />
         </TouchableOpacity>
       </View>
