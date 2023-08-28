@@ -19,18 +19,18 @@ import {AddIcon, DeleteIcon, NurseSvg} from '../../assets/svg';
 const Period = ({
   day = 'Afternoon',
   getTime = (day: string, time: any) => ({day, time}),
-  intialTime,
+  initialTime,
   resetTimeCallback = () => null,
 }: {
   day: string;
   getTime?: (day: string, time: any) => void;
-  intialTime?: Date | undefined;
+  initialTime?: Date | undefined;
   resetTimeCallback?: () => void;
 }) => {
   const {time, showTime, setTime, setShowTime} = usePeriod(
     getTime,
     day,
-    intialTime,
+    initialTime,
   );
 
   return (
@@ -112,11 +112,10 @@ const DashboardScreen = ({}: GlobalScreenTypes) => {
   //--take this out
   const renderInitialTime = (period: string) => {
     //loop through the newMed.time and check for the period that matches, then return the time for that period
-
     const item = newMed.time.map((item, index) =>
       item.day.toLowerCase() == period.toLowerCase() ? item.time : undefined,
     );
-    console.log('THE TIME IS ', item[0]);
+
     return item[0];
   };
   //--take this out
@@ -199,7 +198,7 @@ const DashboardScreen = ({}: GlobalScreenTypes) => {
           {['Morning', 'Afternoon', 'Evening'].map((period: string, index) => (
             <Period
               day={period}
-              intialTime={renderInitialTime(period)}
+              initialTime={renderInitialTime(period)}
               key={index}
               resetTimeCallback={() => removeInitialTime(period)}
               getTime={(day, time) =>

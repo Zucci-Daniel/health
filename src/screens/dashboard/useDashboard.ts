@@ -93,7 +93,6 @@ export const useDashboard = () => {
   };
 
   const updateMedication = (item: MedicationReminder) => {
-    console.log(item);
     //set the whole med to the state.
     setIsUpdating(true);
     setNewMed(item);
