@@ -109,10 +109,12 @@ export const useDashboard = () => {
   };
 
   const finalUpdate = () => {
+    console.log(newMed, " what's inde");
     //find the drug that has the same id
     const drug = medications.map(item =>
       item.id == newMed?.id ? {...item, ...newMed} : item,
     );
+    console.log(medications, ' medications update');
     setMedications(drug);
     closeUpdateSheet();
   };
@@ -262,20 +264,24 @@ export const useDashboard = () => {
 
     return item;
   };
-  //--take this out
-  const removeInitialTime = (period: string) => {
-    //loop through the newMed.time and check for the period that match
-    const time = newMed.time.filter(async (item, _) => {
-      if (item.day.toLowerCase() != period.toLowerCase()) {
-        //cancel the notification using the id.
-        await cancelTriggeredNotification(`${item.id}`);
-        return item;
+
+  const removeInitialTime = async (period: string) => {
+    let idToRemove: string | null = null;
+
+    const filteredTime = newMed.time.filter(item => {
+      if (item.day.toLowerCase() !== period.toLowerCase()) {
+        return item; // Keep items that do not match the period
       } else {
-        return null;
+        idToRemove = `${item.id}`;
+        return null; // Exclude the item that matches the period
       }
     });
 
-    setNewMed({...newMed, time});
+    setNewMed({...newMed, time: filteredTime});
+
+    if (idToRemove) {
+      await cancelTriggeredNotification(idToRemove);
+    }
   };
 
   const updateTime = (day: string, time: Date) => {

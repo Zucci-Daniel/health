@@ -95,7 +95,10 @@ const DashboardScreen = ({}: GlobalScreenTypes) => {
     renderInitialTime,
     removeInitialTime,
     updateTime,
+    newMed,
   } = useDashboard();
+
+  console.log(newMed, ' newMed');
 
   const renderCards = (item: MedicationReminder, _: number) => {
     return (
