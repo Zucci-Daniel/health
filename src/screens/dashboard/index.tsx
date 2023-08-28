@@ -14,6 +14,7 @@ import {MedicationReminder} from './type';
 import {usePeriod} from './usePeriod';
 import {useDashboard} from './useDashboard';
 import {AddIcon, DeleteIcon, NurseSvg} from '../../assets/svg';
+import {logThis} from '../../helpers';
 
 // @reason: creating this component here because it's only used in this component alone.
 const Period = ({
@@ -127,7 +128,25 @@ const DashboardScreen = ({}: GlobalScreenTypes) => {
     // console.log(time, ' tiem');
     //  setNewMed({...newMed,time})
   };
+
+  const updateTime = (day: string, time: Date) => {
+    const updatedTimeArray = newMed.time.map(item =>
+      item.day === day ? {...item, time} : item,
+    );
+    const existingItemIndex = updatedTimeArray.findIndex(
+      item => item.day === day,
+    );
+
+    if (existingItemIndex === -1) {
+      updatedTimeArray.push({day, time});
+    }
+
+    setNewMed({...newMed, time: updatedTimeArray});
+  };
+
   //---
+
+  logThis(newMed);
 
   return (
     <>
@@ -196,9 +215,7 @@ const DashboardScreen = ({}: GlobalScreenTypes) => {
               initialTime={renderInitialTime(period)?.time ?? undefined}
               key={index}
               resetTimeCallback={() => removeInitialTime(period)}
-              getTime={(day, time) =>
-                setNewMed({...newMed, time: [...newMed.time, {day, time}]})
-              }
+              getTime={(day, time) => updateTime(day, time)}
             />
           ))}
 
