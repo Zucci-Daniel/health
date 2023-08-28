@@ -13,8 +13,7 @@ import {convertToTime} from '../../helpers/general';
 import {MedicationReminder} from './type';
 import {usePeriod} from './usePeriod';
 import {useDashboard} from './useDashboard';
-import {AddIcon, DeleteIcon, NurseSvg} from '../../assets/svg';
-import {logThis} from '../../helpers';
+import {AddIcon, NurseSvg} from '../../assets/svg';
 
 // @reason: creating this component here because it's only used in this component alone.
 const Period = ({
@@ -83,8 +82,6 @@ const DashboardScreen = ({}: GlobalScreenTypes) => {
   const {
     addMedSheetRef,
     openSheet,
-    newMed,
-    setNewMed,
     medications,
     inputs,
     handleAddMed,
@@ -95,6 +92,9 @@ const DashboardScreen = ({}: GlobalScreenTypes) => {
     shouldDisableButton,
     user,
     onReset,
+    renderInitialTime,
+    removeInitialTime,
+    updateTime,
   } = useDashboard();
 
   const renderCards = (item: MedicationReminder, _: number) => {
@@ -108,40 +108,6 @@ const DashboardScreen = ({}: GlobalScreenTypes) => {
         onUpdate={() => updateMedication(item)}
       />
     );
-  };
-
-  //--take this out
-  const renderInitialTime = (period: string) => {
-    //loop through the newMed.time and check for the period that matches, then return the time for that period
-    const item = newMed.time.find((item, _) =>
-      item.day.toLowerCase() == period.toLowerCase() ? item : undefined,
-    );
-
-    return item;
-  };
-  //--take this out
-  const removeInitialTime = (period: string) => {
-    //loop through the newMed.time and check for the period that matches, then return the time for that period
-    // const time: Array<MedicationTime> = newMed.time.map((item, index) => {
-    // }
-    // );
-    // console.log(time, ' tiem');
-    //  setNewMed({...newMed,time})
-  };
-
-  const updateTime = (day: string, time: Date) => {
-    const updatedTimeArray = newMed.time.map(item =>
-      item.day === day ? {...item, time} : item,
-    );
-    const existingItemIndex = updatedTimeArray.findIndex(
-      item => item.day === day,
-    );
-
-    if (existingItemIndex === -1) {
-      updatedTimeArray.push({day, time});
-    }
-
-    setNewMed({...newMed, time: updatedTimeArray});
   };
 
   return (

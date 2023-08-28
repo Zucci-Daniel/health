@@ -82,7 +82,6 @@ export const useDashboard = () => {
         time: response,
         id: `${generateUniqueId()}`,
       };
-      logThis(" what i'm adding === > ", payload);
       // Add medication to the med array
       setMedications(prev => [payload, ...prev]);
     }
@@ -236,8 +235,45 @@ export const useDashboard = () => {
     }
   };
 
+  //incase we're editing a reminder
+  const renderInitialTime = (period: string) => {
+    //loop through the newMed.time and check for the period that matches, then return the time for that period
+    const item = newMed.time.find((item, _) =>
+      item.day.toLowerCase() == period.toLowerCase() ? item : undefined,
+    );
+
+    return item;
+  };
+  //--take this out
+  const removeInitialTime = (period: string) => {
+    //loop through the newMed.time and check for the period that matches, then return the time for that period
+    // const time: Array<MedicationTime> = newMed.time.map((item, index) => {
+    // }
+    // );
+    // console.log(time, ' tiem');
+    //  setNewMed({...newMed,time})
+  };
+
+  const updateTime = (day: string, time: Date) => {
+    const updatedTimeArray = newMed.time.map(item =>
+      item.day === day ? {...item, time} : item,
+    );
+    const existingItemIndex = updatedTimeArray.findIndex(
+      item => item.day === day,
+    );
+
+    if (existingItemIndex === -1) {
+      updatedTimeArray.push({day, time});
+    }
+
+    setNewMed({...newMed, time: updatedTimeArray});
+  };
+
   return {
     addMedSheetRef,
+    renderInitialTime,
+    removeInitialTime,
+    updateTime,
     closeSheet,
     openSheet,
     newMed,
