@@ -1,6 +1,6 @@
 import {StyleSheet} from 'react-native';
 import {pallete} from '../../configs/Colors';
-import {Padding} from '../../configs/Constants';
+import {Padding, screenHeight} from '../../configs/Constants';
 import {GlobalScreen} from '../../configs/GlobalStyles';
 
 export const DashboardScreenStyles = StyleSheet.create({
@@ -23,6 +23,11 @@ export const DashboardScreenStyles = StyleSheet.create({
     paddingTop: 30,
     paddingBottom: 50,
     backgroundColor: pallete.screen,
+    height: screenHeight - 50,
+  },
+  sheetWrapper: {
+    flex: 1,
+    gap: 16,
   },
   periodRow: {
     flexDirection: 'row',

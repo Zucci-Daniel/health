@@ -69,14 +69,14 @@ export const useDashboard = () => {
     // Close sheet
     closeSheet();
 
-    // Add medication to the med array
-    setMedications(prev => [{...newMed, id: `${generateUniqueId()}`}, ...prev]);
-
     const response = await onCreateTriggerNotification(
       `It's time to take your ${newMed.name} drug, please do take it!`,
       +newMed.frequency,
       newMed.time,
     );
+    // Add medication to the med array
+    setMedications(prev => [{...newMed, id: `${response}`}, ...prev]);
+
     // Reset the state.
     setNewMed({
       id: '',
@@ -180,7 +180,7 @@ export const useDashboard = () => {
         await notifee.requestPermission();
 
         // Create a trigger notification
-        await notifee.createTriggerNotification(
+        return await notifee.createTriggerNotification(
           {
             title: `Medication Reminder`,
             body: `Hi${

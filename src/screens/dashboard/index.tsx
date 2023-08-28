@@ -144,10 +144,6 @@ const DashboardScreen = ({}: GlobalScreenTypes) => {
     setNewMed({...newMed, time: updatedTimeArray});
   };
 
-  //---
-
-  logThis(newMed);
-
   return (
     <>
       <View style={DashboardScreenStyles.name}>
@@ -195,29 +191,33 @@ const DashboardScreen = ({}: GlobalScreenTypes) => {
         adjustToContentHeight={true}
         sheetRef={addMedSheetRef}>
         <View style={DashboardScreenStyles.sheetContainer}>
-          <AppText styles={Typo().h4} text={'Tell me your medication 🙂'} />
-          {inputs.map(({label, value, onChangeText, keyboardType}, index) => (
-            <Hinput
-              onChangeText={onChangeText}
-              value={value}
-              key={index}
-              placeHolder={label}
-              keyboardType={keyboardType}
+          <View style={DashboardScreenStyles.sheetWrapper}>
+            <AppText styles={Typo().h4} text={'Tell me your medication 🙂'} />
+            {inputs.map(({label, value, onChangeText, keyboardType}, index) => (
+              <Hinput
+                onChangeText={onChangeText}
+                value={value}
+                key={index}
+                placeHolder={label}
+                keyboardType={keyboardType}
+              />
+            ))}
+            <AppText
+              styles={Typo(pallete.dark).Button}
+              text={'When should you take this drug? 🙂'}
             />
-          ))}
-          <AppText
-            styles={Typo(pallete.dark).Button}
-            text={'When should you take this drug? 🙂'}
-          />
-          {['Morning', 'Afternoon', 'Evening'].map((period: string, index) => (
-            <Period
-              day={period}
-              initialTime={renderInitialTime(period)?.time ?? undefined}
-              key={index}
-              resetTimeCallback={() => removeInitialTime(period)}
-              getTime={(day, time) => updateTime(day, time)}
-            />
-          ))}
+            {['Morning', 'Afternoon', 'Evening'].map(
+              (period: string, index) => (
+                <Period
+                  day={period}
+                  initialTime={renderInitialTime(period)?.time ?? undefined}
+                  key={index}
+                  resetTimeCallback={() => removeInitialTime(period)}
+                  getTime={(day, time) => updateTime(day, time)}
+                />
+              ),
+            )}
+          </View>
 
           <Hbutton
             disabled={shouldDisableButton()}
