@@ -148,79 +148,171 @@ export const useDashboard = () => {
     return response;
   };
 
+  // const onCreateTriggerNotification = async (
+  //   message: string,
+  //   frequency: number,
+  //   timeArray: Array<MedicationTime>,
+  // ) => {
+  //   try {
+  //     const channelID: string = 'health';
+
+  //     const noticeIDs: Array<MedicationTime> = [];
+
+  //     for (let i = 0; i < timeArray.length; i++) {
+  //       const {day, time: scheduledTime} = timeArray[i];
+
+  //       // Calculate the scheduled timestamp for the specific day and time
+  //       const now = new Date();
+  //       let scheduledTimestamp = new Date(
+  //         now.getFullYear(),
+  //         now.getMonth(),
+  //         now.getDate(),
+  //         scheduledTime.getHours(),
+  //         scheduledTime.getMinutes(),
+  //       ).getTime();
+
+  //       // Ensure the calculated timestamp is in the future
+  //       if (scheduledTimestamp <= now.getTime()) {
+  //         // Adjust the scheduledTimestamp if it's not in the future
+  //         scheduledTimestamp += 24 * 60 * 60 * 1000; // Add one day in milliseconds
+  //       }
+
+  //       // Schedule notifications using IntervalTrigger
+  //       const trigger: TimestampTrigger = {
+  //         type: TriggerType.TIMESTAMP,
+  //         timestamp: scheduledTime.getTime(),
+  //         // interval: 24 * 60, / // Set the interval to 24 hours in minutes
+  //         repeatFrequency: frequency,
+  //         alarmManager: true,
+  //       };
+
+  //       // Create a notification channel if not already created
+  //       await notifee.createChannel({
+  //         id: channelID,
+  //         name: `Health Medication Reminder`,
+  //         lights: false,
+  //         vibration: true,
+  //         importance: AndroidImportance.HIGH,
+  //       });
+
+  //       await notifee.requestPermission();
+
+  //       // Create a trigger notification
+  //       const id = await notifee.createTriggerNotification(
+  //         {
+  //           title: `Medication Reminder`,
+  //           body: `Hi${
+  //             user?.name !== '' && user?.name !== undefined
+  //               ? ` ${user?.name}!`
+  //               : '!'
+  //           }, ${message}`,
+  //           android: {
+  //             channelId: channelID,
+  //           },
+  //         },
+  //         trigger,
+  //       );
+
+  //       noticeIDs.push({id, day, time: scheduledTime});
+  //     }
+
+  //     return noticeIDs; // Return the array of notification IDs
+  //   } catch (error) {
+  //     logThis(error);
+  //   }
+  // };
+
+  //----- TRIGGER ----
+
+  const calculateScheduledTimestamp = (scheduledTime: Date): number => {
+    const now = new Date();
+    let scheduledTimestamp = new Date(
+      now.getFullYear(),
+      now.getMonth(),
+      now.getDate(),
+      scheduledTime.getHours(),
+      scheduledTime.getMinutes(),
+    ).getTime();
+
+    if (scheduledTimestamp <= now.getTime()) {
+      scheduledTimestamp += 24 * 60 * 60 * 1000; // Add one day in milliseconds
+    }
+
+    return scheduledTimestamp;
+  };
+
+  const createNotificationChannel = async (channelID: string) => {
+    await notifee.createChannel({
+      id: channelID,
+      name: `Health Medication Reminder`,
+      lights: false,
+      vibration: true,
+      importance: AndroidImportance.HIGH,
+    });
+  };
+
+  const createTriggerNotification = async (
+    message: string,
+    channelID: string,
+    scheduledTime: Date,
+    frequency: number,
+  ) => {
+    const trigger: TimestampTrigger = {
+      type: TriggerType.TIMESTAMP,
+      timestamp: scheduledTime.getTime(),
+      repeatFrequency: frequency,
+      alarmManager: true,
+    };
+
+    await notifee.requestPermission();
+
+    const id = await notifee.createTriggerNotification(
+      {
+        title: `Medication Reminder`,
+        body: message,
+        android: {
+          channelId: channelID,
+        },
+      },
+      trigger,
+    );
+
+    return id;
+  };
+
   const onCreateTriggerNotification = async (
     message: string,
     frequency: number,
     timeArray: Array<MedicationTime>,
-  ) => {
+  ): Promise<Array<MedicationTime>> => {
     try {
       const channelID: string = 'health';
-
       const noticeIDs: Array<MedicationTime> = [];
 
       for (let i = 0; i < timeArray.length; i++) {
         const {day, time: scheduledTime} = timeArray[i];
+        const scheduledTimestamp = calculateScheduledTimestamp(scheduledTime);
 
-        // Calculate the scheduled timestamp for the specific day and time
-        const now = new Date();
-        let scheduledTimestamp = new Date(
-          now.getFullYear(),
-          now.getMonth(),
-          now.getDate(),
-          scheduledTime.getHours(),
-          scheduledTime.getMinutes(),
-        ).getTime();
+        await createNotificationChannel(channelID);
 
-        // Ensure the calculated timestamp is in the future
-        if (scheduledTimestamp <= now.getTime()) {
-          // Adjust the scheduledTimestamp if it's not in the future
-          scheduledTimestamp += 24 * 60 * 60 * 1000; // Add one day in milliseconds
-        }
-
-        // Schedule notifications using IntervalTrigger
-        const trigger: TimestampTrigger = {
-          type: TriggerType.TIMESTAMP,
-          timestamp: scheduledTime.getTime(),
-          // interval: 24 * 60, / // Set the interval to 24 hours in minutes
-          repeatFrequency: frequency,
-          alarmManager: true,
-        };
-
-        // Create a notification channel if not already created
-        await notifee.createChannel({
-          id: channelID,
-          name: `Health Medication Reminder`,
-          lights: false,
-          vibration: true,
-          importance: AndroidImportance.HIGH,
-        });
-
-        await notifee.requestPermission();
-
-        // Create a trigger notification
-        const id = await notifee.createTriggerNotification(
-          {
-            title: `Medication Reminder`,
-            body: `Hi${
-              user?.name !== '' && user?.name !== undefined
-                ? ` ${user?.name}!`
-                : '!'
-            }, ${message}`,
-            android: {
-              channelId: channelID,
-            },
-          },
-          trigger,
+        const id = await createTriggerNotification(
+          `Hi${user?.name ? ` ${user.name}!` : '!'}, ${message}`,
+          channelID,
+          scheduledTime,
+          frequency,
         );
 
         noticeIDs.push({id, day, time: scheduledTime});
       }
 
-      return noticeIDs; // Return the array of notification IDs
+      return noticeIDs;
     } catch (error) {
       logThis(error);
+      return [];
     }
   };
+
+  //----- TRIGGER ----
 
   const onReset = () => {
     if (isUpdating) {
