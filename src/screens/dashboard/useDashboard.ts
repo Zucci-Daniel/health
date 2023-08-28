@@ -247,9 +247,14 @@ export const useDashboard = () => {
   //--take this out
   const removeInitialTime = (period: string) => {
     //loop through the newMed.time and check for the period that matches, then return the time for that period
-    const time = newMed.time.filter((item, _) =>
-      item.day.toLowerCase() != period.toLowerCase() ? item : null,
-    );
+    const time = newMed.time.filter((item, _) => {
+      if (item.day.toLowerCase() != period.toLowerCase()) {
+        return item;
+        //cancel the notification using the id.
+      } else {
+        return null;
+      }
+    });
 
     setNewMed({...newMed, time});
   };
