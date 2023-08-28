@@ -236,7 +236,10 @@ export const useDashboard = () => {
     }
   };
 
-  //----- TRIGGER ----
+  const cancelTriggeredNotification = async (id: string) => {
+    console.log('WHAT I CANCELED ', id);
+    return await notifee.cancelTriggerNotification(id);
+  };
 
   const onReset = () => {
     if (isUpdating) {
@@ -262,11 +265,12 @@ export const useDashboard = () => {
   };
   //--take this out
   const removeInitialTime = (period: string) => {
-    //loop through the newMed.time and check for the period that matches, then return the time for that period
-    const time = newMed.time.filter((item, _) => {
+    //loop through the newMed.time and check for the period that match
+    const time = newMed.time.filter(async (item, _) => {
       if (item.day.toLowerCase() != period.toLowerCase()) {
-        return item;
         //cancel the notification using the id.
+        await cancelTriggeredNotification(`${item.id}`);
+        return item;
       } else {
         return null;
       }
