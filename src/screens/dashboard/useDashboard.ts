@@ -237,7 +237,6 @@ export const useDashboard = () => {
   };
 
   const cancelTriggeredNotification = async (id: string) => {
-    console.log('WHAT I CANCELED ', id);
     return await notifee.cancelTriggerNotification(id);
   };
 
