@@ -193,15 +193,70 @@ export const useDashboard = () => {
   //   }
   // };
 
-  //--creating notification at once based on the number of times
+  //VERSION 1 --creating notification at once based on the number of times
+  // const onCreateTriggerNotification = async (
+  //   time: number,
+  //   message: string,
+  //   frequency: number,
+  // ) => {
+  //   try {
+  //     const channelID: string = 'health';
+  //     const now = Date.now();
+
+  //     // Calculate the interval between notifications
+  //     const interval = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+
+  //     // Schedule notifications based on the specified frequency
+  //     for (let i = 0; i < frequency; i++) {
+  //       const trigger: TimestampTrigger = {
+  //         type: TriggerType.TIMESTAMP,
+  //         timestamp: now + time + i * interval,
+  //         alarmManager: true,
+  //         repeatFrequency: 0, // No need to repeat individual notifications
+  //       };
+
+  //       // Create a notification channel if not already created
+  //       await notifee.createChannel({
+  //         id: channelID,
+  //         name: `Health Medication Reminder`,
+  //         lights: false,
+  //         vibration: true,
+  //         importance: AndroidImportance.HIGH,
+  //       });
+
+  //       // Request notification permission if not already granted
+  //       await notifee.requestPermission();
+
+  //       // Create a trigger notification for each frequency
+  //       await notifee.createTriggerNotification(
+  //         {
+  //           title: `Medication Reminder`,
+  //           body: `Hi${
+  //             user?.name !== '' && user?.name !== undefined
+  //               ? ` ${user?.name}!`
+  //               : '!'
+  //           }, ${message}`, // just making up readable strings
+  //           android: {
+  //             channelId: channelID,
+  //           },
+  //         },
+  //         trigger,
+  //       );
+  //     }
+  //   } catch (error) {
+  //     logThis(error);
+  //   }
+  // };
+
+  //VERSION 2, WELL DOCUMENTED.
   const onCreateTriggerNotification = async (
-    time: number,
-    message: string,
-    frequency: number,
+    time: number, // The delay in milliseconds before the first notification.
+    message: string, // The message content for the notification.
+    frequency: number, // The number of times notifications should be scheduled.
   ) => {
     try {
-      const channelID: string = 'health';
-      const now = Date.now();
+      const channelID: string = 'health'; // The unique identifier for the notification channel.
+      const now = Date.now(); // Get the current timestamp in milliseconds.
 
       // Calculate the interval between notifications
       const interval = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
@@ -209,38 +264,37 @@ export const useDashboard = () => {
       // Schedule notifications based on the specified frequency
       for (let i = 0; i < frequency; i++) {
         const trigger: TimestampTrigger = {
-          type: TriggerType.TIMESTAMP,
-          timestamp: now + time + i * interval,
-          alarmManager: true,
-          repeatFrequency: 0, // No need to repeat individual notifications
+          type: TriggerType.TIMESTAMP, // Define the trigger type as timestamp-based.
+          timestamp: now + time + i * interval, // Calculate the specific timestamp for this notification.
+          alarmManager: true, // Use the AlarmManager on Android for accurate timing.
         };
 
         // Create a notification channel if not already created
         await notifee.createChannel({
           id: channelID,
-          name: `Health Medication Reminder`,
+          name: `Health Medication Reminder`, // The name of the notification channel.
           lights: false,
           vibration: true,
-          importance: AndroidImportance.HIGH,
+          importance: AndroidImportance.HIGH, // Set the importance of the notifications.
         });
 
-        // Request notification permission if not already granted
-        await notifee.requestPermission();
+        // Request notification permission if not already granted (IOS only, Android is granted by default, if not granted, Android can call this line.)
+        await notifee.requestPermission(); // Ask the user for permission to send notifications.
 
         // Create a trigger notification for each frequency
         await notifee.createTriggerNotification(
           {
-            title: `Medication Reminder`,
+            title: `Medication Reminder`, // The title of the notification.
             body: `Hi${
               user?.name !== '' && user?.name !== undefined
                 ? ` ${user?.name}!`
                 : '!'
-            }, ${message}`, // just making up readable strings
+            }, ${message}`, // Construct the notification body.
             android: {
-              channelId: channelID,
+              channelId: channelID, // Assign the notification to the specified channel.
             },
           },
-          trigger,
+          trigger, // Use the previously defined trigger configuration.
         );
       }
     } catch (error) {
