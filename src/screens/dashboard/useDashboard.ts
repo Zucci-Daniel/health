@@ -10,6 +10,7 @@ import {storeSliceType} from '../../redux/storeType';
 import {inputType, MedicationReminder, MedicationTime} from './type';
 import {setCurrentUser} from '../../redux/global-store/storeSlice';
 import {logThis} from '../../helpers';
+import {generateUniqueId} from '../../helpers/general';
 
 export const useDashboard = () => {
   const dispatch: any = useDispatch();
@@ -68,13 +69,23 @@ export const useDashboard = () => {
     // Close sheet
     closeSheet();
 
-    const response = await onCreateTriggerNotification(
-      `It's time to take your ${newMed.name} drug, please do take it!`,
-      +newMed.frequency,
-      newMed.time,
-    );
-    // Add medication to the med array
-    setMedications(prev => [{...newMed, id: `${response}`}, ...prev]);
+    const response: Array<MedicationTime> | undefined =
+      await onCreateTriggerNotification(
+        `It's time to take your ${newMed.name} drug, please do take it!`,
+        +newMed.frequency,
+        newMed.time,
+      );
+
+    if (response) {
+      const payload: MedicationReminder = {
+        ...newMed,
+        time: response,
+        id: `${generateUniqueId()}`,
+      };
+      logThis(" what i'm adding === > ", payload);
+      // Add medication to the med array
+      setMedications(prev => [payload, ...prev]);
+    }
 
     // Reset the state.
     setNewMed({
@@ -146,12 +157,14 @@ export const useDashboard = () => {
     try {
       const channelID: string = 'health';
 
+      const noticeIDs: Array<MedicationTime> = [];
+
       for (let i = 0; i < timeArray.length; i++) {
         const {day, time: scheduledTime} = timeArray[i];
 
         // Calculate the scheduled timestamp for the specific day and time
         const now = new Date();
-        const scheduledTimestamp = new Date(
+        let scheduledTimestamp = new Date(
           now.getFullYear(),
           now.getMonth(),
           now.getDate(),
@@ -159,12 +172,19 @@ export const useDashboard = () => {
           scheduledTime.getMinutes(),
         ).getTime();
 
-        // Schedule notifications using TimestampTrigger
+        // Ensure the calculated timestamp is in the future
+        if (scheduledTimestamp <= now.getTime()) {
+          // Adjust the scheduledTimestamp if it's not in the future
+          scheduledTimestamp += 24 * 60 * 60 * 1000; // Add one day in milliseconds
+        }
+
+        // Schedule notifications using IntervalTrigger
         const trigger: TimestampTrigger = {
           type: TriggerType.TIMESTAMP,
-          timestamp: scheduledTimestamp,
-          alarmManager: true,
+          timestamp: scheduledTime.getTime(),
+          // interval: 24 * 60, / // Set the interval to 24 hours in minutes
           repeatFrequency: frequency,
+          alarmManager: true,
         };
 
         // Create a notification channel if not already created
@@ -179,7 +199,7 @@ export const useDashboard = () => {
         await notifee.requestPermission();
 
         // Create a trigger notification
-        return await notifee.createTriggerNotification(
+        const id = await notifee.createTriggerNotification(
           {
             title: `Medication Reminder`,
             body: `Hi${
@@ -194,8 +214,10 @@ export const useDashboard = () => {
           trigger,
         );
 
-        //the trigger notification request returns an ID, you can use to update, delete or cancel notification, this application is limited to that.
+        noticeIDs.push({id, day, time: scheduledTime});
       }
+
+      return noticeIDs; // Return the array of notification IDs
     } catch (error) {
       logThis(error);
     }

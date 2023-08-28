@@ -1,8 +1,18 @@
-[
-  {"day": "Morning", "time": "2023-08-28T11:55:38.000Z"},
-  {"day": "Morning", "time": "2023-08-28T11:55:38.000Z"},
-  {"day": "Morning", "time": "2023-08-28T12:07:53.130Z"},
-  {"day": "Morning", "time": "2023-08-28T11:55:38.000Z"},
-  {"day": "Morning", "time": "2023-08-28T11:55:38.000Z"},
-  {"day": "Morning", "time": "2023-08-28T11:55:38.000Z"}
-]
+{
+  "dosage": "3",
+  "frequency": "2",
+  "id": "2675da72-7e1b-4b94-b0b9-87bbb70549a2",
+  "name": "Nioton",
+  "time": [
+    {
+      "day": "Morning",
+      "id": "pKa4qlZNkdAAIzUsJyNP",
+      "time": "2023-08-28T16:16:27.000Z"
+    },
+    {
+      "day": "Evening",
+      "id": "2C4E0CSnr6ra4RwG3APl",
+      "time": "2023-08-28T16:18:31.000Z"
+    }
+  ]
+}

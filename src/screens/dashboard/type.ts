@@ -11,6 +11,7 @@ export type inputType = {
 };
 
 export interface MedicationTime {
+  id?: string;
   day: string;
   time: Date; // This should be a string representing the time, as JavaScript Date objects are not directly serializable in JSON
 }

@@ -10,3 +10,6 @@ export const convertToReadableTime = (time: any) => {
 export const convertToTime = (date: any) => dayjs(date).format('h:mm A');
 
 export const generateUniqueId = () => uuid.v4();
+
+export const convertToTimeAndDate = (date: any) =>
+  dayjs(date).format('ddd MMM YYYY, h:mm A');
