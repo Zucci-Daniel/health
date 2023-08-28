@@ -1,6 +1,5 @@
 import {NavigationContainer} from '@react-navigation/native';
 import {useEffect, useState} from 'react';
-import {View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {getItem} from '../../helpers/localStorage';
 import {STORAGE_CONSTANTS} from '../../helpers/storageConstants';
@@ -10,8 +9,6 @@ import {HomeScreen} from '../../screens';
 import {Login, OnboardingScreen, Signup} from '../../screens/authentication';
 import {Stack} from '../router-constants';
 import {routes} from '../router-constants/routes';
-
-const DummyScreen = () => <View style={{flex: 1}} />;
 
 export function NavigationProvider() {
   const {user} = useSelector((state: storeSliceType) => state.storeReducer);
@@ -31,7 +28,7 @@ export function NavigationProvider() {
       setIsAppReady(true);
     }
   };
-  //-----
+
   useEffect(() => {
     getCurrentUser();
   }, []);

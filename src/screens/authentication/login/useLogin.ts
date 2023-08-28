@@ -1,7 +1,6 @@
 import {useState} from 'react';
 import {useDispatch} from 'react-redux';
 import {NavigationType} from '../../../configs/GlobalScreenTypes';
-import {logThis} from '../../../helpers';
 import {getItem, storeItem} from '../../../helpers/localStorage';
 import {STORAGE_CONSTANTS} from '../../../helpers/storageConstants';
 import {useSilentToast} from '../../../presenters/h-toast';
@@ -26,12 +25,9 @@ export const useLogin = (navigation: NavigationType) => {
 
     const userInfo = await getItem(password);
 
-    logThis('user info==> ', userInfo);
-
     if (userInfo) {
       //change the app state, and unmount the auth state.
       // navigation.navigate(routes.LOGIN);
-      logThis(userInfo, ' user info');
       dispatch(setCurrentUser(JSON.parse(userInfo)));
       storeItem(STORAGE_CONSTANTS.CURRENT_USER_INFO, userInfo);
     } else {

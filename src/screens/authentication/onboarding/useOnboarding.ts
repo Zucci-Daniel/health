@@ -10,9 +10,6 @@ import {screenWidth} from '../../../configs/Constants';
 import {NavigationType} from '../../../configs/GlobalScreenTypes';
 import {onBoardDataProps} from './type';
 
-const img: any =
-  'https://cdn.pixabay.com/photo/2023/05/17/08/53/flower-7999465_1280.jpg';
-
 const onBoardingData: onBoardDataProps[] = [
   {
     title: 'Your Health, is your Wealth!',
@@ -52,11 +49,7 @@ export const useOnboarding = (
     setSelectedIndex(currentIndex);
   };
 
-  const handleNavigate = () => {
-    // navigation.replace(routesNames.createAccount);
-    // storeItem(storageNames.IS_APP_LAUNCHED, true);
-  };
-  //-----
+  const handleNavigate = () => {};
 
   const handleNext = () => {
     if (selectedIndex + 1 < onBoardingData.length) {

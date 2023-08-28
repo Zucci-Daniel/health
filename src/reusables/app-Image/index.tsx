@@ -33,11 +33,6 @@ const AppImage = ({
             resizeMode={mode}
             onLoad={onLoad}
           />
-          {/* {isLoading && (
-            <View style={[AppImageStyles().fill, StyleSheet.absoluteFill]}>
-              <EtSkeleton />
-            </View>
-          )} */}
         </>
       ) : (
         emptyImageComponent
