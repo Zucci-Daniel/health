@@ -78,6 +78,7 @@ export const useDashboard = () => {
         await onCreateTriggerNotification(
           item.time.getTime(),
           `It's time to take your ${newMed.name} drug, please do take it!`,
+          +newMed.frequency,
         );
       }),
     );
@@ -88,7 +89,7 @@ export const useDashboard = () => {
       dosage: '',
       name: '',
       frequency: '',
-      time: [], // array of obj with period and time. { period: 'Morning', time: '2023-08-25T18:03:48.000Z' }
+      time: [], // array of obj with period and time. { day: 'Morning', time: '2023-08-25T18:03:48.000Z' }
     });
   };
 
@@ -144,6 +145,55 @@ export const useDashboard = () => {
     return response;
   };
 
+  //---for a single notification.
+  // const onCreateTriggerNotification = async (
+  //   time: number,
+  //   message: string,
+  //   frequency: number,
+  // ) => {
+  //   try {
+  //     const channelID: string = 'health';
+  //     //schedule a reminder
+  //     const trigger: TimestampTrigger = {
+  //       type: TriggerType.TIMESTAMP,
+  //       timestamp: time,
+  //       alarmManager: true,
+  //       repeatFrequency: frequency,
+
+  //     };
+
+  //     //create a notification channel
+  //     await notifee.createChannel({
+  //       id: channelID,
+  //       name: `Health Medication Reminder`,
+  //       lights: false,
+  //       vibration: true,
+  //       importance: AndroidImportance.HIGH,
+  //     });
+
+  //     await notifee.requestPermission();
+
+  //     // Create a trigger notification
+  //     await notifee.createTriggerNotification(
+  //       {
+  //         title: `Medication Reminder`,
+  //         body: `Hi${
+  //           user?.name !== '' && user?.name !== undefined
+  //             ? ` ${user?.name}!`
+  //             : '!'
+  //         }, ${message}`, // just making up readable strings
+  //         android: {
+  //           channelId: channelID,
+  //         },
+  //       },
+  //       trigger,
+  //     );
+  //   } catch (error) {
+  //     logThis(error);
+  //   }
+  // };
+
+  //--creating notification at once based on the number of times
   const onCreateTriggerNotification = async (
     time: number,
     message: string,
@@ -151,52 +201,61 @@ export const useDashboard = () => {
   ) => {
     try {
       const channelID: string = 'health';
-      //schedule a reminder
-      const trigger: TimestampTrigger = {
-        type: TriggerType.TIMESTAMP,
-        timestamp: time,
-        alarmManager: true,
-        repeatFrequency: frequency,
-      };
+      const now = Date.now();
 
-      //create a notification channel
-      await notifee.createChannel({
-        id: channelID,
-        name: `Health Medication Reminder`,
-        lights: false,
-        vibration: true,
-        importance: AndroidImportance.HIGH,
-      });
+      // Calculate the interval between notifications
+      const interval = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
 
-      await notifee.requestPermission();
+      // Schedule notifications based on the specified frequency
+      for (let i = 0; i < frequency; i++) {
+        const trigger: TimestampTrigger = {
+          type: TriggerType.TIMESTAMP,
+          timestamp: now + time + i * interval,
+          alarmManager: true,
+          repeatFrequency: 0, // No need to repeat individual notifications
+        };
 
-      // Create a trigger notification
-      await notifee.createTriggerNotification(
-        {
-          title: `Medication Reminder`,
-          body: `Hi${
-            user?.name !== '' && user?.name !== undefined
-              ? ` ${user?.name}!`
-              : '!'
-          }, ${message}`, // just making up readable strings
-          android: {
-            channelId: channelID,
+        // Create a notification channel if not already created
+        await notifee.createChannel({
+          id: channelID,
+          name: `Health Medication Reminder`,
+          lights: false,
+          vibration: true,
+          importance: AndroidImportance.HIGH,
+        });
+
+        // Request notification permission if not already granted
+        await notifee.requestPermission();
+
+        // Create a trigger notification for each frequency
+        await notifee.createTriggerNotification(
+          {
+            title: `Medication Reminder`,
+            body: `Hi${
+              user?.name !== '' && user?.name !== undefined
+                ? ` ${user?.name}!`
+                : '!'
+            }, ${message}`, // just making up readable strings
+            android: {
+              channelId: channelID,
+            },
           },
-        },
-        trigger,
-      );
+          trigger,
+        );
+      }
     } catch (error) {
       logThis(error);
     }
   };
 
   const onReset = () => {
+    setIsUpdating(false);
     setNewMed({
       id: '',
       dosage: '',
       name: '',
       frequency: '',
-      time: [], // array of obj with period and time. { period: 'Morning', time: '2023-08-25T18:03:48.000Z' }
+      time: [],
     });
   };
 

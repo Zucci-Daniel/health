@@ -13,6 +13,7 @@ export const HreminderCardStyles = StyleSheet.create({
   row: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    paddingTop: 5,
   },
   buttonRow: {
     flexDirection: 'row',
@@ -28,5 +29,8 @@ export const HreminderCardStyles = StyleSheet.create({
   delete: {
     paddingVertical: Padding / 2,
     borderRadius: Padding,
+  },
+  reminders: {
+    paddingVertical: Padding / 2,
   },
 });

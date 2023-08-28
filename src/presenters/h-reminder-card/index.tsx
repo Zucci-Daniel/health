@@ -3,6 +3,7 @@ import {TouchableOpacity, View} from 'react-native';
 import {DeleteIcon, EditIcon} from '../../assets/svg';
 import {pallete} from '../../configs/Colors';
 import {Typo} from '../../configs/Typography';
+import {convertToTime} from '../../helpers/general';
 import {AppText} from '../../reusables';
 import {HreminderCardStyles} from './styles';
 import {HreminderCardType} from './type';
@@ -40,10 +41,18 @@ const HreminderCard = ({
       </View>
       <View style={HreminderCardStyles.row}>
         <AppText
-          text={`${dosage}pills/take`}
-          styles={Typo(pallete.error).Caption}
+          text={`${dosage} pills per take`}
+          styles={Typo(pallete.error, null, null, null, 'right').Button}
         />
-        <AppText text={formatTimeArray()} styles={Typo(pallete.text).Caption} />
+      </View>
+      <View style={HreminderCardStyles.reminders}>
+        {time.map(({day, time}, index) => (
+          <AppText
+            key={index}
+            text={`${day} at ${convertToTime(time)}`}
+            styles={Typo(pallete.text).Caption}
+          />
+        ))}
       </View>
       <View style={HreminderCardStyles.buttonRow}>
         <TouchableOpacity onPress={onDelete} style={HreminderCardStyles.delete}>
