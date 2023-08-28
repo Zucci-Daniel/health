@@ -7,7 +7,6 @@ export const usePeriod = (
 ) => {
   const [time, setTime] = useState<Date | undefined>(initialTime);
   const [showTime, setShowTime] = useState(false);
-  console.log('THE INITIAL TIME IS =>', initialTime, time);
 
   useEffect(() => {
     if (initialTime) {

@@ -139,53 +139,6 @@ export const useDashboard = () => {
     return response;
   };
 
-  //---for a single notification.
-  // const onCreateTriggerNotification = async (
-  //   time: number,
-  //   message: string,
-  //   frequency: number,
-  // ) => {
-  //   try {
-  //     const channelID: string = 'health';
-  //     //schedule a reminder
-  //     const trigger: TimestampTrigger = {
-  //       type: TriggerType.TIMESTAMP,
-  //       timestamp: time,
-  //       alarmManager: true,
-  //       repeatFrequency: frequency,
-  //     };
-
-  //     //create a notification channel
-  //     await notifee.createChannel({
-  //       id: channelID,
-  //       name: `Health Medication Reminder`,
-  //       lights: false,
-  //       vibration: true,
-  //       importance: AndroidImportance.HIGH,
-  //     });
-
-  //     await notifee.requestPermission();
-
-  //     // Create a trigger notification
-  //     await notifee.createTriggerNotification(
-  //       {
-  //         title: `Medication Reminder`,
-  //         body: `Hi${
-  //           user?.name !== '' && user?.name !== undefined
-  //             ? ` ${user?.name}!`
-  //             : '!'
-  //         }, ${message}`, // just making up readable strings
-  //         android: {
-  //           channelId: channelID,
-  //         },
-  //       },
-  //       trigger,
-  //     );
-  //   } catch (error) {
-  //     logThis(error);
-  //   }
-  // };
-
   const onCreateTriggerNotification = async (
     message: string,
     frequency: number,

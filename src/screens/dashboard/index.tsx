@@ -10,7 +10,7 @@ import ToggleSwitch from 'toggle-switch-react-native';
 import {pallete} from '../../configs/Colors';
 import DatePicker from 'react-native-date-picker';
 import {convertToTime} from '../../helpers/general';
-import {MedicationReminder, MedicationTime} from './type';
+import {MedicationReminder} from './type';
 import {usePeriod} from './usePeriod';
 import {useDashboard} from './useDashboard';
 import {AddIcon, DeleteIcon, NurseSvg} from '../../assets/svg';
@@ -112,23 +112,18 @@ const DashboardScreen = ({}: GlobalScreenTypes) => {
   //--take this out
   const renderInitialTime = (period: string) => {
     //loop through the newMed.time and check for the period that matches, then return the time for that period
-    const item = newMed.time.map((item, index) =>
-      item.day.toLowerCase() == period.toLowerCase() ? item.time : undefined,
+    const item = newMed.time.find((item, _) =>
+      item.day.toLowerCase() == period.toLowerCase() ? item : undefined,
     );
 
-    return item[0];
+    return item;
   };
   //--take this out
   const removeInitialTime = (period: string) => {
     //loop through the newMed.time and check for the period that matches, then return the time for that period
-
     // const time: Array<MedicationTime> = newMed.time.map((item, index) => {
-
     // }
     // );
-
-    console.log(newMed, ' == ,');
-
     // console.log(time, ' tiem');
     //  setNewMed({...newMed,time})
   };
@@ -198,7 +193,7 @@ const DashboardScreen = ({}: GlobalScreenTypes) => {
           {['Morning', 'Afternoon', 'Evening'].map((period: string, index) => (
             <Period
               day={period}
-              initialTime={renderInitialTime(period)}
+              initialTime={renderInitialTime(period)?.time ?? undefined}
               key={index}
               resetTimeCallback={() => removeInitialTime(period)}
               getTime={(day, time) =>
