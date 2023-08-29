@@ -43,6 +43,7 @@ export const DashboardScreenStyles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    height: screenHeight / 2,
   },
   name: {
     paddingHorizontal: Padding,
