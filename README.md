@@ -1,3 +1,5 @@
+Link to the apk for android => https://drive.google.com/file/d/1EcZHg9edsyN-PRm_r2MCHqmOGiVUz3DG/view?usp=sharing
+
 ## Getting Started
 
 main branch has the updated code.
