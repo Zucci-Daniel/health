@@ -12,9 +12,8 @@ import {onBoardDataProps} from './type';
 
 const onBoardingData: onBoardDataProps[] = [
   {
-    title: 'Your Health, is your Wealth!',
+    title: 'Your Health is your Wealth!',
     subTitle: `Take it seriously or it won't take you seriously!`,
-    img: require('../../../assets/images/1.png'),
   },
 ];
 

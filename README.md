@@ -77,3 +77,26 @@ To learn more about React Native, take a look at the following resources:
 - [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
 - [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
 - [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+
+
+
+
+**About the App:**
+
+This app is designed to streamline assessments and optimize the core assessment process. The basic flowchart of the app can be accessed in the `src/images` folder.
+
+**App Focus:**
+
+The app emphasizes the core aspects of assessments. While additional capabilities using Redux can be integrated, the current version prioritizes the essential assessment functionalities.
+
+**Testing:**
+
+Tests are available for general helpers in the `general.test.ts` file. This ensures reliability and robustness.
+
+**User-Friendly UI:**
+
+Simplicity is key. The UI follows an intuitive and straightforward flow to solve problems efficiently.
+
+Enjoy the app's streamlined approach to assessments!
+
+
