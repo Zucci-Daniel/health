@@ -23,6 +23,8 @@ yarn ios
 
 **About the App:**
 
+!!!! Please pull from "ready" branch !!!!
+
 This app is designed to streamline assessments and optimize the core assessment process. The basic flowchart of the app can be accessed in the `src/images` folder.
 
 **App Overview:**
