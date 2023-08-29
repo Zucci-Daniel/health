@@ -84,16 +84,16 @@ export const useDashboard = () => {
       };
       // Add medication to the med array
       setMedications(prev => [payload, ...prev]);
-    }
 
-    // Reset the state.
-    setNewMed({
-      id: '',
-      dosage: '',
-      name: '',
-      frequency: '',
-      time: [], // array of obj with period and time. { day: 'Morning', time: '2023-08-25T18:03:48.000Z' }
-    });
+      // Reset the state.
+      setNewMed({
+        id: '',
+        dosage: '',
+        name: '',
+        frequency: '',
+        time: [], // array of obj with period and time. { day: 'Morning', time: '2023-08-25T18:03:48.000Z' }
+      });
+    }
   };
 
   const handleDeleteMedication = (id: string) => {
@@ -109,12 +109,10 @@ export const useDashboard = () => {
   };
 
   const finalUpdate = () => {
-    console.log(newMed, " what's inde");
     //find the drug that has the same id
     const drug = medications.map(item =>
       item.id == newMed?.id ? {...item, ...newMed} : item,
     );
-    console.log(medications, ' medications update');
     setMedications(drug);
     closeUpdateSheet();
   };
