@@ -1,5 +1,3 @@
-!!!! Please pull from "ready" branch !!!!
-
 
 # using npm
 npm start
@@ -25,8 +23,6 @@ npm run ios
 yarn ios
 
 **About the App:**
-
-!!!! Please pull from "ready" branch !!!!
 
 ```
 
