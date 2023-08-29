@@ -3,12 +3,13 @@ import {useDispatch, useSelector} from 'react-redux';
 import notifee, {
   AndroidImportance,
   TimestampTrigger,
+  RepeatFrequency,
   TriggerType,
 } from '@notifee/react-native';
 import {useSheet} from '../../hooks/useSheet';
 import {storeSliceType} from '../../redux/storeType';
 import {inputType, MedicationReminder, MedicationTime} from './type';
-import {setCurrentUser} from '../../redux/global-store/storeSlice';
+import {reset, setCurrentUser} from '../../redux/global-store/storeSlice';
 import {logThis} from '../../helpers';
 import {generateUniqueId} from '../../helpers/general';
 import {useSilentToast} from '../../presenters/h-toast';
@@ -68,6 +69,7 @@ export const useDashboard = () => {
   };
 
   const handleAddMed = async () => {
+    onReset();
     // Close sheet
     closeSheet();
 
@@ -186,7 +188,7 @@ export const useDashboard = () => {
     const trigger: TimestampTrigger = {
       type: TriggerType.TIMESTAMP,
       timestamp: scheduledTime.getTime(),
-      repeatFrequency: frequency,
+      repeatFrequency: RepeatFrequency.DAILY,
       alarmManager: true,
     };
 
@@ -210,7 +212,7 @@ export const useDashboard = () => {
     message: string,
     frequency: number,
     timeArray: Array<MedicationTime>,
-  ): Promise<Array<MedicationTime>> => {
+  ): Promise<Array<MedicationTime> | undefined> => {
     try {
       const channelID: string = 'health';
       const noticeIDs: Array<MedicationTime> = [];
@@ -227,18 +229,21 @@ export const useDashboard = () => {
           scheduledTime,
           frequency,
         );
+
         noticeIDs.push({id, day, time: scheduledTime});
       }
-
       if (noticeIDs.length > 1) {
         return noticeIDs;
       } else {
         showToast('info', "Couldn't schedule your notification! try again");
         return noticeIDs;
       }
-    } catch (error) {
+    } catch (error: any) {
+      if (`${error?.message}`.includes('date must be in the future')) {
+        showToast('info', 'Time has past! use a future time!');
+      }
       logThis(error);
-      return [];
+      // return [];
     }
   };
 
@@ -247,16 +252,16 @@ export const useDashboard = () => {
   };
 
   const onReset = () => {
-    if (isUpdating) {
-      setIsUpdating(false);
-      setNewMed({
-        id: '',
-        dosage: '',
-        name: '',
-        frequency: '',
-        time: [], // array of obj with period and time. { day: 'Morning', time: '2023-08-25T18:03:48.000Z' }
-      });
-    }
+    // if (isUpdating) {
+    setIsUpdating(false);
+    setNewMed({
+      id: '',
+      dosage: '',
+      name: '',
+      frequency: '',
+      time: [], // array of obj with period and time. { day: 'Morning', time: '2023-08-25T18:03:48.000Z' }
+    });
+    // }
   };
 
   //incase we're editing a reminder
