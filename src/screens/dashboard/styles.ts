@@ -41,6 +41,7 @@ export const DashboardScreenStyles = StyleSheet.create({
   },
   emptyContainer: {
     flex: 1,
+    height: screenHeight / 2,
     justifyContent: 'center',
     alignItems: 'center',
   },
