@@ -1,5 +1,7 @@
 ## Getting Started
 
+main branch has the updated code.
+
 To start using the application, follow these steps:
 
 1. Download the code or clone the repository:
