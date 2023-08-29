@@ -235,7 +235,7 @@ export const useDashboard = () => {
       if (noticeIDs.length > 1) {
         return noticeIDs;
       } else {
-        showToast('info', "Couldn't schedule your notification! try again");
+        // showToast('info', "Couldn't schedule your notification! try again");
         return noticeIDs;
       }
     } catch (error: any) {
