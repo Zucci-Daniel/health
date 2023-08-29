@@ -23,8 +23,6 @@ yarn ios
 
 **About the App:**
 
-```bash
-# using npm
 !!!! Please pull from "ready" branch !!!!
 
 ```
