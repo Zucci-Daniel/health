@@ -11,9 +11,11 @@ import {inputType, MedicationReminder, MedicationTime} from './type';
 import {setCurrentUser} from '../../redux/global-store/storeSlice';
 import {logThis} from '../../helpers';
 import {generateUniqueId} from '../../helpers/general';
+import {useSilentToast} from '../../presenters/h-toast';
 
 export const useDashboard = () => {
   const dispatch: any = useDispatch();
+  const showToast = useSilentToast();
   const addMedSheetRef = useRef(null);
   //accessing the user state from redux
   const {user} = useSelector((state: storeSliceType) => state.storeReducer);
@@ -84,16 +86,16 @@ export const useDashboard = () => {
       };
       // Add medication to the med array
       setMedications(prev => [payload, ...prev]);
-    }
 
-    // Reset the state.
-    setNewMed({
-      id: '',
-      dosage: '',
-      name: '',
-      frequency: '',
-      time: [], // array of obj with period and time. { day: 'Morning', time: '2023-08-25T18:03:48.000Z' }
-    });
+      // Reset the state.
+      setNewMed({
+        id: '',
+        dosage: '',
+        name: '',
+        frequency: '',
+        time: [], // array of obj with period and time. { day: 'Morning', time: '2023-08-25T18:03:48.000Z' }
+      });
+    }
   };
 
   const handleDeleteMedication = (id: string) => {
@@ -109,12 +111,10 @@ export const useDashboard = () => {
   };
 
   const finalUpdate = () => {
-    console.log(newMed, " what's inde");
     //find the drug that has the same id
     const drug = medications.map(item =>
       item.id == newMed?.id ? {...item, ...newMed} : item,
     );
-    console.log(medications, ' medications update');
     setMedications(drug);
     closeUpdateSheet();
   };
@@ -227,11 +227,15 @@ export const useDashboard = () => {
           scheduledTime,
           frequency,
         );
-
         noticeIDs.push({id, day, time: scheduledTime});
       }
 
-      return noticeIDs;
+      if (noticeIDs.length > 1) {
+        return noticeIDs;
+      } else {
+        showToast('info', "Couldn't schedule your notification! try again");
+        return noticeIDs;
+      }
     } catch (error) {
       logThis(error);
       return [];

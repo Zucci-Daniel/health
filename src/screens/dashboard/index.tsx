@@ -132,7 +132,7 @@ const DashboardScreen = ({}: GlobalScreenTypes) => {
         renderItem={({item, index}) => renderCards(item, index)}
         ListEmptyComponent={() => (
           <View style={DashboardScreenStyles.emptyContainer}>
-            <NurseSvg width={200} height={200} />
+            <NurseSvg width={300} height={300} />
             <AppText
               styles={Typo(pallete.para, null, null, null, 'center').empty}
               text={'No medication set yet! click the "Add Med" to start'}

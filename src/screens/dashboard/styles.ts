@@ -23,7 +23,7 @@ export const DashboardScreenStyles = StyleSheet.create({
     paddingTop: 30,
     paddingBottom: 50,
     backgroundColor: pallete.screen,
-    height: screenHeight - 50,
+    height: screenHeight - 150,
   },
   sheetWrapper: {
     flex: 1,
@@ -37,13 +37,13 @@ export const DashboardScreenStyles = StyleSheet.create({
   time: {
     height: 50,
     width: '100%',
-    backgroundColor: 'red',
   },
   emptyContainer: {
     flex: 1,
     height: screenHeight / 2,
     justifyContent: 'center',
     alignItems: 'center',
+    height: screenHeight / 2,
   },
   name: {
     paddingHorizontal: Padding,
