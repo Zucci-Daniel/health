@@ -70,6 +70,6 @@ Experience a well-structured and organized codebase that enhances scalability an
 
 ## Technical Approach
 
-The app follows the MVC pattern and employs the Atomic Structure, chosen for their flexibility and effective separation of concerns.
+The app follows the Component-Based Architecture pattern and employs the Atomic Structure, chosen for their flexibility and effective separation of concerns.
 
 Enjoy the efficiency and simplicity of the app's assessment approach!
